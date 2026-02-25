@@ -54,7 +54,7 @@ header p{font-size:.68rem;color:var(--dim);margin-top:1px}
   padding:10px 16px 8px;
 }
 #paper-title{font-size:.7rem;color:var(--dim);text-align:center;margin-bottom:6px}
-#paper-grid{display:grid;grid-template-columns:50px repeat(4,1fr);gap:2px 4px;align-items:center;font-size:.78rem}
+#paper-grid{display:grid;grid-template-columns:50px repeat(5,1fr);gap:2px 4px;align-items:center;font-size:.78rem}
 .paper-label{text-align:right;padding-right:6px;font-size:.68rem}
 .paper-label.carry-l{color:var(--orange)}
 .paper-label.a-l{color:var(--cyan)}
@@ -74,7 +74,7 @@ header p{font-size:.68rem;color:var(--dim);margin-top:1px}
 .paper-cell.off{background:#1a080822;border-color:#331111;color:#ff444466}
 .paper-sep{grid-column:1/-1;height:1px;background:#333;margin:2px 0}
 #paper-bits-label{
-  display:grid;grid-template-columns:50px repeat(4,1fr);
+  display:grid;grid-template-columns:50px repeat(5,1fr);
   font-size:.55rem;color:#334;text-align:center;margin-top:1px;
 }
 #paper-bits-label span:first-child{text-align:right;padding-right:6px}
@@ -164,21 +164,24 @@ header p{font-size:.68rem;color:var(--dim);margin-top:1px}
 
 <!-- ══ PAPER ADDITION ══ -->
 <div id="paper-wrap">
-  <div id="paper-title">Binaer addisjon &mdash; kolonne for kolonne</div>
+  <div id="paper-title">Binær addisjon &mdash; kolonne for kolonne</div>
   <div id="paper-grid">
     <div class="paper-label carry-l">Mente:</div>
+    <div class="paper-cell" id="pc-c4" style="visibility:hidden"></div>
     <div class="paper-cell" id="pc-c3"></div>
     <div class="paper-cell" id="pc-c2"></div>
     <div class="paper-cell" id="pc-c1"></div>
     <div class="paper-cell" id="pc-c0" style="color:#334;font-size:.7rem">0</div>
 
     <div class="paper-label a-l">A:</div>
+    <div class="paper-cell" style="visibility:hidden"></div>
     <div class="paper-cell" id="pc-a3"></div>
     <div class="paper-cell" id="pc-a2"></div>
     <div class="paper-cell" id="pc-a1"></div>
     <div class="paper-cell" id="pc-a0"></div>
 
     <div class="paper-label b-l">+ B:</div>
+    <div class="paper-cell" style="visibility:hidden"></div>
     <div class="paper-cell" id="pc-b3"></div>
     <div class="paper-cell" id="pc-b2"></div>
     <div class="paper-cell" id="pc-b1"></div>
@@ -187,13 +190,14 @@ header p{font-size:.68rem;color:var(--dim);margin-top:1px}
     <div class="paper-sep"></div>
 
     <div class="paper-label sum-l">Sum:</div>
+    <div class="paper-cell" id="pc-s4"></div>
     <div class="paper-cell" id="pc-s3"></div>
     <div class="paper-cell" id="pc-s2"></div>
     <div class="paper-cell" id="pc-s1"></div>
     <div class="paper-cell" id="pc-s0"></div>
   </div>
   <div id="paper-bits-label">
-    <span></span><span>Bit 3</span><span>Bit 2</span><span>Bit 1</span><span>Bit 0</span>
+    <span></span><span>S4</span><span>Bit 3</span><span>Bit 2</span><span>Bit 1</span><span>Bit 0</span>
   </div>
 </div>
 
@@ -244,7 +248,7 @@ header p{font-size:.68rem;color:var(--dim);margin-top:1px}
 <!-- ══ EXPLANATION ══ -->
 <div id="explanation">
   <div class="tab-nav">
-    <button class="tab-btn active" onclick="showTab('tab-binary')">Binaere tall</button>
+    <button class="tab-btn active" onclick="showTab('tab-binary')">Binære tall</button>
     <button class="tab-btn" onclick="showTab('tab-gates')">Logiske gater</button>
     <button class="tab-btn" onclick="showTab('tab-adder')">Full Adder</button>
     <button class="tab-btn" onclick="showTab('tab-ripple')">Ripple-Carry</button>
@@ -252,9 +256,9 @@ header p{font-size:.68rem;color:var(--dim);margin-top:1px}
   </div>
 
   <div id="tab-binary" class="tab-content active">
-    <h2>Hva er binaere tall?</h2>
-    <p>Vi bruker <strong>desimalsystemet</strong> (base 10) med sifrene 0-9. Datamaskiner bruker <strong>binaersystemet</strong> (base 2) med bare <code>0</code> og <code>1</code>.</p>
-    <p>Hvert siffer kalles en <strong>bit</strong>. En bit er enten av (0) eller paa (1) &mdash; som en lysbryter.</p>
+    <h2>Hva er binære tall?</h2>
+    <p>Vi bruker <strong>desimalsystemet</strong> (base 10) med sifrene 0-9. Datamaskiner bruker <strong>binærsystemet</strong> (base 2) med bare <code>0</code> og <code>1</code>.</p>
+    <p>Hvert siffer kalles en <strong>bit</strong>. En bit er enten av (0) eller på (1) &mdash; som en lysbryter.</p>
     <h3>Posisjonsverdi</h3>
     <table class="tt">
       <tr><th>Posisjon</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
@@ -269,23 +273,23 @@ header p{font-size:.68rem;color:var(--dim);margin-top:1px}
       <tr><td>2</td><td>0010</td><td>6</td><td>0110</td><td>10</td><td>1010</td><td>14</td><td>1110</td></tr>
       <tr><td>3</td><td>0011</td><td>7</td><td>0111</td><td>11</td><td>1011</td><td>15</td><td>1111</td></tr>
     </table>
-    <h3>Hvorfor binaert?</h3>
-    <p>Elektronikk kan enkelt skille mellom to spenningsnivaaer (hoey/lav = 1/0), men ikke ti. Binaert er derfor det naturlige &laquo;spraaket&raquo; for datamaskiner.</p>
+    <h3>Hvorfor binært?</h3>
+    <p>Elektronikk kan enkelt skille mellom to spenningsnivåer (høy/lav = 1/0), men ikke ti. Binært er derfor det naturlige «språket» for datamaskiner.</p>
   </div>
 
   <div id="tab-gates" class="tab-content">
     <h2>Logiske gater</h2>
     <p>Byggesteinene i alle digitale kretser. Tar inn to bits, gir ut en bit.</p>
-    <h3>AND (&laquo;og&raquo;)</h3>
-    <p>Gir <code>1</code> bare naar <strong>begge</strong> er <code>1</code>.</p>
+    <h3>AND («og»)</h3>
+    <p>Gir <code>1</code> bare når <strong>begge</strong> er <code>1</code>.</p>
     <table class="tt"><tr><th>A</th><th>B</th><th>AND</th></tr><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></table>
-    <h3>OR (&laquo;eller&raquo;)</h3>
-    <p>Gir <code>1</code> naar <strong>minst en</strong> er <code>1</code>.</p>
+    <h3>OR («eller»)</h3>
+    <p>Gir <code>1</code> når <strong>minst én</strong> er <code>1</code>.</p>
     <table class="tt"><tr><th>A</th><th>B</th><th>OR</th></tr><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></table>
-    <h3>XOR (&laquo;eksklusiv eller&raquo;)</h3>
-    <p>Gir <code>1</code> naar inngangene er <strong>forskjellige</strong>.</p>
+    <h3>XOR («eksklusiv eller»)</h3>
+    <p>Gir <code>1</code> når inngangene er <strong>forskjellige</strong>.</p>
     <table class="tt"><tr><th>A</th><th>B</th><th>XOR</th></tr><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></table>
-    <p>XOR er nokkelen til addisjon: <code>1 + 1 = 10</code> &mdash; XOR gir sum-biten (0), AND gir menten (1)!</p>
+    <p>XOR er nøkkelen til addisjon: <code>1 + 1 = 10</code> &mdash; XOR gir sum-biten (0), AND gir menten (1)!</p>
   </div>
 
   <div id="tab-adder" class="tab-content">
@@ -312,21 +316,21 @@ header p{font-size:.68rem;color:var(--dim);margin-top:1px}
 
   <div id="tab-ripple" class="tab-content">
     <h2>4-bit Ripple-Carry Adder</h2>
-    <p>Fire full adders i serie. Carry &laquo;boelger&raquo; fra bit 0 til bit 3.</p>
+    <p>Fire full adders i serie. Carry «bølger» fra bit 0 til bit 3.</p>
     <ul>
       <li><strong>FA0:</strong> A0 + B0 + 0 &rarr; S0, C0</li>
       <li><strong>FA1:</strong> A1 + B1 + C0 &rarr; S1, C1</li>
       <li><strong>FA2:</strong> A2 + B2 + C1 &rarr; S2, C2</li>
       <li><strong>FA3:</strong> A3 + B3 + C2 &rarr; S3, S4</li>
     </ul>
-    <h3>Hvorfor &laquo;Ripple&raquo;?</h3>
-    <p>FA0 maa beregnes foer FA1 kan starte, osv. Menten &laquo;boelger&raquo; gjennom &mdash; som dominobrikker. Se animasjonen!</p>
+    <h3>Hvorfor «Ripple»?</h3>
+    <p>FA0 må beregnes før FA1 kan starte, osv. Menten «bølger» gjennom &mdash; som dominobrikker. Se animasjonen!</p>
   </div>
 
   <div id="tab-real" class="tab-content">
     <h2>I virkeligheten</h2>
-    <p>En moderne CPU har <strong>milliarder</strong> gater. ALU-en bruker samme prinsipp, men 64-bit og med <strong>carry-lookahead</strong> for parallell carry &mdash; addisjon paa under ett nanosekund!</p>
-    <p>Gater bygges av <strong>transistorer</strong> (smaa elektroniske brytere i silisium). Vaar 4-bit adder med 20 gater trenger ~150-200 transistorer. En moderne brikke har transistorer paa bare noen faa nanometer.</p>
+    <p>En moderne CPU har <strong>milliarder</strong> gater. ALU-en bruker samme prinsipp, men 64-bit og med <strong>carry-lookahead</strong> for parallell carry &mdash; addisjon på under ett nanosekund!</p>
+    <p>Gater bygges av <strong>transistorer</strong> (små elektroniske brytere i silisium). Vår 4-bit adder med 20 gater trenger ~150-200 transistorer. En moderne brikke har transistorer på bare noen få nanometer.</p>
   </div>
 </div>
 
@@ -440,7 +444,7 @@ function buildCircuit(){
 
     // P → XOR2, AND2
     addW(`p${i}-xor2`,[[pX,Y.pY],[pX,Y.xor2+6],[x2+8,Y.xor2+6]],wireG);
-    addW(`p${i}-and2`,[[pX,Y.pY],[pX,Y.and2-4],[a2x+8,Y.and2+6]],wireG);
+    addW(`p${i}-and2`,[[pX,Y.pY],[pX,Y.and2+6],[a2x+8,Y.and2+6]],wireG);
 
     // Carry-in (from right edge) → XOR2, AND2
     const ciX=lx+FA_W-20;
@@ -465,7 +469,7 @@ function buildCircuit(){
     const orX=cx-GW/2;
     addGate(`or-${i}`,'OR',orX,Y.or,gateG);
     addW(`g${i}-or`,[[gX,Y.or+6],[orX+7,Y.or+6]],wireG);
-    addW(`h${i}-or`,[[hX,Y.or+20],[orX+GW,Y.or+20]],wireG);
+    addW(`h${i}-or`,[[hX,Y.or+20],[hX,Y.or+GH+5],[orX+4,Y.or+GH+5],[orX+7,Y.or+20]],wireG);
 
     // ── OR out → carry ──
     addW(`co-${i}`,[[orX+GW-1,Y.or+GH/2],[cx+3,Y.or+GH/2],[cx+3,Y.cOut]],wireG);
@@ -524,6 +528,8 @@ function resetPaper(){
     ['a','b','s'].forEach(t=>{const e=document.getElementById(`pc-${t}${i}`);if(e){e.textContent='';e.className='paper-cell'}});
     const c=document.getElementById(`pc-c${i}`);if(c){c.textContent=i===0?'0':'';c.className='paper-cell';if(i===0)c.style.cssText='color:#334;font-size:.7rem'}
   }
+  // Reset S4 cell
+  const s4=document.getElementById('pc-s4');if(s4){s4.textContent='';s4.className='paper-cell'}
 }
 
 function setPaper(type,idx,val,cls,delay){
@@ -561,10 +567,10 @@ function setW(id,val,delay,clr){
   const w=EW[id];if(!w)return;
   timers.push(setTimeout(()=>{
     const on=val===1;
-    const c=clr||(on?'var(--green)':'var(--wire-off)');
+    const c=clr||(on?'var(--green)':'#331a1a');
     w.setAttribute('stroke',c);
     w.setAttribute('stroke-width',on?(w.id.startsWith('w-cc')?3.5:2.6):(w.id.startsWith('w-cc')?2.5:2));
-    if(on){const fm={'var(--green)':'url(#gl-g)','var(--cyan)':'url(#gl-c)','var(--magenta)':'url(#gl-m)','var(--orange)':'url(#gl-o)'};w.setAttribute('filter',fm[c]||'url(#gl-g)')}
+    if(on){const fm={'var(--green)':'url(#gl-g)','var(--cyan)':'url(#gl-c)','var(--mag)':'url(#gl-m)','var(--orange)':'url(#gl-o)'};w.setAttribute('filter',fm[c]||'url(#gl-g)')}
     if(on){const len=w.getTotalLength?w.getTotalLength():50;w.style.strokeDasharray=`${len*.25} ${len*.1}`;w.style.strokeDashoffset=len;w.style.transition='none';requestAnimationFrame(()=>{w.style.transition=`stroke-dashoffset ${380/animSpeed}ms linear`;w.style.strokeDashoffset='0'});timers.push(setTimeout(()=>{w.style.strokeDasharray='';w.style.strokeDashoffset='';w.style.transition=''},420/animSpeed))}
   },delay));
 }
@@ -574,15 +580,15 @@ function setG(id,on,delay){
   timers.push(setTimeout(()=>{
     if(g.tagName==='circle'){
       const cls=g.getAttribute('data-cls');
-      if(!on){g.setAttribute('fill','#1a0808');g.setAttribute('stroke','#332222');return}
-      const m={'a':['var(--cyan)','url(#gl-c)'],'b':['var(--magenta)','url(#gl-m)'],'s':['var(--green)','url(#gl-g)']};
+      if(!on){g.setAttribute('fill','#1a0808');g.setAttribute('stroke','#332222');g.removeAttribute('filter');return}
+      const m={'a':['var(--cyan)','url(#gl-c)'],'b':['var(--mag)','url(#gl-m)'],'s':['var(--green)','url(#gl-g)']};
       const[c,f]=m[cls]||['var(--green)','url(#gl-g)'];
       g.setAttribute('fill',c);g.setAttribute('stroke',c);g.setAttribute('filter',f);
     }else{
       const c=on?'var(--green)':'#443344';
       g.querySelectorAll('path').forEach(p=>p.setAttribute('stroke',c));
       g.querySelectorAll('text').forEach(t=>t.setAttribute('fill',c));
-      if(on)g.setAttribute('filter','url(#gl-gate)');
+      if(on)g.setAttribute('filter','url(#gl-gate)');else g.removeAttribute('filter');
     }
   },delay));
 }
@@ -602,13 +608,13 @@ function runAnimation(){
   const dt=300/animSpeed;
   let t=60;
 
-  // Show all A,B values in paper immediately
+  // Show all A,B values in paper immediately (dim colors)
   for(let i=0;i<4;i++){
-    setPaper('a',i,r.bits[3-i].ai,'',0);
-    setPaper('b',i,r.bits[3-i].bi,'',0);
+    setPaper('a',i,r.bits[3-i].ai,'on-cyan',0);
+    setPaper('b',i,r.bits[3-i].bi,'on-mag',0);
   }
 
-  setStep('Starter addisjon fra hoyre (bit 0) &mdash; akkurat som paa papir!',t);
+  setStep('Starter addisjon fra høyre (bit 0) &mdash; akkurat som på papir!',t);
 
   for(let i=0;i<4;i++){
     const b=r.bits[i];
@@ -626,17 +632,17 @@ function runAnimation(){
     setG(`a${i}`,b.ai,d);
     setG(`b${i}`,b.bi,d);
     setSig(`va${i}`,b.ai,d,b.ai?'var(--cyan)':'#ff444444');
-    setSig(`vb${i}`,b.bi,d,b.bi?'var(--magenta)':'#ff444444');
+    setSig(`vb${i}`,b.bi,d,b.bi?'var(--mag)':'#ff444444');
 
     // 2. Wires down
     setW(`a${i}-d`,b.ai,d+dt*.5,b.ai?'var(--cyan)':undefined);
-    setW(`b${i}-d`,b.bi,d+dt*.5,b.bi?'var(--magenta)':undefined);
+    setW(`b${i}-d`,b.bi,d+dt*.5,b.bi?'var(--mag)':undefined);
 
     // 3. Wires to gates
     setW(`a${i}-xor1`,b.ai,d+dt,b.ai?'var(--cyan)':undefined);
-    setW(`b${i}-xor1`,b.bi,d+dt,b.bi?'var(--magenta)':undefined);
+    setW(`b${i}-xor1`,b.bi,d+dt,b.bi?'var(--mag)':undefined);
     setW(`a${i}-and1`,b.ai,d+dt,b.ai?'var(--cyan)':undefined);
-    setW(`b${i}-and1`,b.bi,d+dt,b.bi?'var(--magenta)':undefined);
+    setW(`b${i}-and1`,b.bi,d+dt,b.bi?'var(--mag)':undefined);
 
     // 4. Gates compute
     setG(`xor1-${i}`,true,d+dt*1.7);
@@ -684,9 +690,9 @@ function runAnimation(){
     setW(`co-${i}`,b.cout,d+dt*4.5,coClr);
     setSig(`vc${i}`,b.cout,d+dt*4.5,b.cout?'var(--orange)':'#ff444444');
 
-    // Paper: carry for next column
+    // Paper: carry for next column (C_i goes to bit position i+1)
     if(i<3){
-      setPaper('c',col-1,b.cout,b.cout?'on-orange':'off',d+dt*4.5);
+      setPaper('c',i+1,b.cout,b.cout?'on-orange':'off',d+dt*4.5);
     }
 
     // 13. Carry chain to next FA (orange)
@@ -697,12 +703,14 @@ function runAnimation(){
     t+=dt*5.5;
   }
 
-  // S4
+  // S4 (final carry)
   const coClr=r.carry?'var(--orange)':undefined;
   setW('cc-final',r.carry,t,coClr);
   setG('s4',r.carry,t+dt);
   setSig('vs4',r.carry,t+dt);
   setRes(4,r.carry,t+dt);
+  // Paper: show S4 in paper grid
+  setPaper('s',4,r.carry,r.carry?'on-green':'off',t+dt);
 
   setStep(`Ferdig! <strong>${valA} + ${valB} = ${valA+valB}</strong>`,t+dt*1.5);
   timers.push(setTimeout(()=>{document.getElementById('result-dec').textContent=`= ${valA+valB}`},t+dt*1.5));
