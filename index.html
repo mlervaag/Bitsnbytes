@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bits &amp; Bytes — 4-bit Adder Visualizer</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#0a0a1a;
+  color:#e0e0e0;
+  font-family:'Courier New',monospace;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+h1{
+  text-align:center;
+  padding:18px 0 4px;
+  font-size:1.6rem;
+  color:#00ff88;
+  text-shadow:0 0 10px #00ff8855,0 0 20px #00ff8833;
+  letter-spacing:2px;
+}
+.subtitle{
+  text-align:center;
+  font-size:.85rem;
+  color:#667;
+  margin-bottom:10px;
+}
+
+/* ── Result display ── */
+#result-bar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:24px;
+  padding:10px 0 6px;
+  flex-wrap:wrap;
+}
+.result-bits{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+.result-bit{
+  width:36px;height:36px;
+  border-radius:50%;
+  border:2px solid #333;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;font-weight:bold;
+  transition:all .3s;
+  background:#111;
+  color:#555;
+}
+.result-bit.on{
+  background:#00ff88;
+  color:#0a0a1a;
+  border-color:#00ff88;
+  box-shadow:0 0 8px #00ff88,0 0 16px #00ff8866;
+}
+.result-bit.off{
+  background:#1a0a0a;
+  color:#ff444488;
+  border-color:#331111;
+}
+.result-decimal{
+  font-size:2rem;
+  color:#00ff88;
+  text-shadow:0 0 10px #00ff8855;
+  min-width:80px;
+  text-align:center;
+}
+.result-label{
+  font-size:.7rem;
+  color:#667;
+  text-align:center;
+}
+
+/* ── SVG circuit ── */
+#circuit-container{
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+  position:relative;
+}
+#circuit-svg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+/* ── Input controls ── */
+#input-bar{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:40px;
+  padding:12px 0 18px;
+  flex-wrap:wrap;
+}
+.input-group{
+  text-align:center;
+}
+.input-group label{
+  display:block;
+  font-size:.75rem;
+  color:#889;
+  margin-bottom:4px;
+}
+.input-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.input-row button{
+  width:32px;height:32px;
+  border:1px solid #00ff8844;
+  background:#111;
+  color:#00ff88;
+  font-size:1.1rem;
+  border-radius:6px;
+  cursor:pointer;
+  transition:all .15s;
+}
+.input-row button:hover{
+  background:#00ff8822;
+  border-color:#00ff88;
+}
+.input-row button:active{
+  transform:scale(.92);
+}
+.num-display{
+  font-size:1.8rem;
+  min-width:44px;
+  text-align:center;
+  color:#fff;
+}
+.bin-display{
+  font-size:.8rem;
+  color:#00ff88;
+  margin-top:2px;
+  letter-spacing:2px;
+}
+.plus-sign{
+  font-size:2rem;
+  color:#00ff88;
+  text-shadow:0 0 8px #00ff8844;
+}
+.equals-sign{
+  font-size:1.5rem;
+  color:#556;
+}
+
+/* ── Explanation section ── */
+#explanation{
+  max-width:900px;
+  margin:30px auto 0;
+  padding:0 20px 60px;
+}
+#explanation h2{
+  color:#00ff88;
+  font-size:1.2rem;
+  margin:28px 0 10px;
+  text-shadow:0 0 6px #00ff8833;
+  border-bottom:1px solid #1a2a1a;
+  padding-bottom:4px;
+}
+#explanation h3{
+  color:#88ccaa;
+  font-size:.95rem;
+  margin:16px 0 6px;
+}
+#explanation p,#explanation li{
+  color:#bbb;
+  font-size:.85rem;
+  line-height:1.65;
+  font-family:'Segoe UI',Arial,sans-serif;
+}
+#explanation ul{
+  padding-left:20px;
+  margin:6px 0;
+}
+#explanation code{
+  background:#151525;
+  color:#00ff88;
+  padding:1px 5px;
+  border-radius:3px;
+  font-size:.82rem;
+}
+.truth-table{
+  border-collapse:collapse;
+  margin:8px 0 12px;
+  font-size:.8rem;
+}
+.truth-table th,.truth-table td{
+  border:1px solid #2a2a3a;
+  padding:4px 10px;
+  text-align:center;
+}
+.truth-table th{
+  background:#151525;
+  color:#00ff88;
+}
+.truth-table td{color:#ccc}
+.gate-example{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:#111;
+  border:1px solid #222;
+  border-radius:6px;
+  padding:4px 10px;
+  margin:3px 4px;
+  font-size:.82rem;
+}
+.gate-example .sym{color:#00ff88;font-weight:bold}
+
+/* ── Speed control ── */
+#speed-control{
+  text-align:center;
+  padding:4px 0;
+}
+#speed-control label{
+  font-size:.72rem;
+  color:#667;
+  margin-right:6px;
+}
+#speed-control input[type=range]{
+  width:120px;
+  accent-color:#00ff88;
+  vertical-align:middle;
+}
+#speed-label{font-size:.72rem;color:#00ff88}
+
+/* ── Tab navigation for explanation ── */
+.tab-nav{
+  display:flex;
+  gap:4px;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+.tab-btn{
+  padding:6px 14px;
+  background:#111;
+  border:1px solid #222;
+  color:#889;
+  font-size:.78rem;
+  border-radius:6px 6px 0 0;
+  cursor:pointer;
+  transition:all .15s;
+  font-family:'Segoe UI',Arial,sans-serif;
+}
+.tab-btn:hover{background:#1a1a2a;color:#aab}
+.tab-btn.active{
+  background:#0a0a1a;
+  border-color:#00ff8844;
+  border-bottom-color:#0a0a1a;
+  color:#00ff88;
+}
+.tab-content{display:none}
+.tab-content.active{display:block}
+</style>
+</head>
+<body>
+
+<h1>Bits &amp; Bytes</h1>
+<p class="subtitle">4-bit Ripple-Carry Adder Visualizer</p>
+
+<!-- Result display -->
+<div id="result-bar">
+  <div>
+    <div class="result-bits" id="result-bits"></div>
+    <div class="result-label">S4 S3 S2 S1 S0</div>
+  </div>
+  <div>
+    <div class="result-decimal" id="result-decimal">= 0</div>
+    <div class="result-label">desimal</div>
+  </div>
+</div>
+
+<!-- Speed control -->
+<div id="speed-control">
+  <label>Hastighet:</label>
+  <input type="range" id="speed-slider" min="1" max="10" value="5">
+  <span id="speed-label">5x</span>
+</div>
+
+<!-- SVG Circuit -->
+<div id="circuit-container">
+  <svg id="circuit-svg" viewBox="0 0 1100 680" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Glow filter for active wires -->
+      <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feFlood flood-color="#00ff88" flood-opacity="0.6" result="color"/>
+        <feComposite in="color" in2="blur" operator="in" result="shadow"/>
+        <feMerge>
+          <feMergeNode in="shadow"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2" result="blur"/>
+        <feFlood flood-color="#ff4444" flood-opacity="0.4" result="color"/>
+        <feComposite in="color" in2="blur" operator="in" result="shadow"/>
+        <feMerge>
+          <feMergeNode in="shadow"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <filter id="glow-gate" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2.5" result="blur"/>
+        <feFlood flood-color="#00ff88" flood-opacity="0.35" result="color"/>
+        <feComposite in="color" in2="blur" operator="in" result="shadow"/>
+        <feMerge>
+          <feMergeNode in="shadow"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+
+      <!-- Gate symbols -->
+      <!-- XOR gate: curved body with extra input curve -->
+      <symbol id="gate-xor" viewBox="0 0 60 40">
+        <path d="M8,0 Q28,20 8,40" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M12,0 Q32,20 12,40 Q36,40 50,20 Q36,0 12,0 Z" fill="#0d0d20" stroke="currentColor" stroke-width="2"/>
+        <text x="26" y="24" font-size="9" fill="currentColor" text-anchor="middle" font-family="monospace">XOR</text>
+      </symbol>
+      <!-- AND gate: flat left, curved right -->
+      <symbol id="gate-and" viewBox="0 0 60 40">
+        <path d="M12,0 L12,40 L30,40 Q52,40 52,20 Q52,0 30,0 Z" fill="#0d0d20" stroke="currentColor" stroke-width="2"/>
+        <text x="30" y="24" font-size="9" fill="currentColor" text-anchor="middle" font-family="monospace">AND</text>
+      </symbol>
+      <!-- OR gate: curved body -->
+      <symbol id="gate-or" viewBox="0 0 60 40">
+        <path d="M8,0 Q28,20 8,40 Q30,40 50,20 Q30,0 8,0 Z" fill="#0d0d20" stroke="currentColor" stroke-width="2"/>
+        <text x="28" y="24" font-size="9" fill="currentColor" text-anchor="middle" font-family="monospace">OR</text>
+      </symbol>
+    </defs>
+
+    <!-- Background grid dots -->
+    <g id="bg-dots" opacity="0.08">
+    </g>
+
+    <!-- Circuit will be drawn by JS -->
+    <g id="circuit-wires"></g>
+    <g id="circuit-gates"></g>
+    <g id="circuit-labels"></g>
+  </svg>
+</div>
+
+<!-- Input controls -->
+<div id="input-bar">
+  <div class="input-group">
+    <label>Tall A</label>
+    <div class="input-row">
+      <button onclick="changeVal('a',-1)">−</button>
+      <span class="num-display" id="val-a">7</span>
+      <button onclick="changeVal('a',1)">+</button>
+    </div>
+    <div class="bin-display" id="bin-a">0111</div>
+  </div>
+  <div class="plus-sign">+</div>
+  <div class="input-group">
+    <label>Tall B</label>
+    <div class="input-row">
+      <button onclick="changeVal('b',-1)">−</button>
+      <span class="num-display" id="val-b">5</span>
+      <button onclick="changeVal('b',1)">+</button>
+    </div>
+    <div class="bin-display" id="bin-b">0101</div>
+  </div>
+</div>
+
+<!-- Explanation section -->
+<div id="explanation">
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab('tab-binary')">Binære tall</button>
+    <button class="tab-btn" onclick="showTab('tab-gates')">Logiske gater</button>
+    <button class="tab-btn" onclick="showTab('tab-adder')">Full Adder</button>
+    <button class="tab-btn" onclick="showTab('tab-ripple')">Ripple-Carry</button>
+  </div>
+
+  <div id="tab-binary" class="tab-content active">
+    <h2>Hva er binære tall?</h2>
+    <p>Vi mennesker bruker <strong>desimalsystemet</strong> (base 10) med sifrene 0-9. Datamaskiner bruker <strong>binærsystemet</strong> (base 2) med bare to sifre: <code>0</code> og <code>1</code>.</p>
+    <p>Hvert siffer i et binært tall kalles en <strong>bit</strong> (binary digit). En bit kan enten være av (0) eller på (1) — akkurat som en lysbryter.</p>
+
+    <h3>Posisjonsverdi</h3>
+    <p>I desimalsystemet har hvert siffer en verdi basert på sin posisjon: enere, tiere, hundrere osv. I binært fungerer det likt, men med potenser av 2:</p>
+    <table class="truth-table">
+      <tr><th>Posisjon</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+      <tr><td>Verdi</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+      <tr><td>2ⁿ</td><td>2³</td><td>2²</td><td>2¹</td><td>2⁰</td></tr>
+    </table>
+    <p>Eksempel: <code>1101₂</code> = 1×8 + 1×4 + 0×2 + 1×1 = <strong>13</strong></p>
+
+    <h3>4 bits = tall fra 0 til 15</h3>
+    <p>Med 4 bits kan vi representere 2⁴ = 16 forskjellige verdier (0–15). Noen eksempler:</p>
+    <table class="truth-table">
+      <tr><th>Desimal</th><th>Binært</th><th>Desimal</th><th>Binært</th></tr>
+      <tr><td>0</td><td>0000</td><td>8</td><td>1000</td></tr>
+      <tr><td>1</td><td>0001</td><td>9</td><td>1001</td></tr>
+      <tr><td>2</td><td>0010</td><td>10</td><td>1010</td></tr>
+      <tr><td>3</td><td>0011</td><td>11</td><td>1011</td></tr>
+      <tr><td>4</td><td>0100</td><td>12</td><td>1100</td></tr>
+      <tr><td>5</td><td>0101</td><td>13</td><td>1101</td></tr>
+      <tr><td>6</td><td>0110</td><td>14</td><td>1110</td></tr>
+      <tr><td>7</td><td>0111</td><td>15</td><td>1111</td></tr>
+    </table>
+
+    <h3>Hvorfor binært?</h3>
+    <p>Elektroniske kretser bruker spenningsnivåer for å representere data. Det er mye enklere å skille mellom to nivåer (høy/lav spenning = 1/0) enn ti nivåer. Derfor er binært det naturlige "språket" for datamaskiner.</p>
+  </div>
+
+  <div id="tab-gates" class="tab-content">
+    <h2>Logiske gater</h2>
+    <p>Logiske gater er de grunnleggende byggesteinene i alle digitale kretser. Hver gate tar inn ett eller to binære signaler (0 eller 1) og gir ut ett signal basert på en logisk regel.</p>
+
+    <h3>AND-gate ("og")</h3>
+    <p>Gir <code>1</code> bare når <strong>begge</strong> inngangene er <code>1</code>. Tenk: "Er BÅDE A og B på?"</p>
+    <table class="truth-table">
+      <tr><th>A</th><th>B</th><th>A AND B</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td></tr>
+    </table>
+
+    <h3>OR-gate ("eller")</h3>
+    <p>Gir <code>1</code> når <strong>minst én</strong> av inngangene er <code>1</code>. Tenk: "Er A eller B (eller begge) på?"</p>
+    <table class="truth-table">
+      <tr><th>A</th><th>B</th><th>A OR B</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td></tr>
+    </table>
+
+    <h3>XOR-gate ("eksklusiv eller")</h3>
+    <p>Gir <code>1</code> når inngangene er <strong>forskjellige</strong>. Tenk: "Er nøyaktig én av A og B på?"</p>
+    <table class="truth-table">
+      <tr><th>A</th><th>B</th><th>A XOR B</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td></tr>
+    </table>
+    <p>XOR er spesielt nyttig for addisjon: <code>1 + 1 = 10₂</code> (sum=0, mente=1) — og XOR gir nettopp sum-biten!</p>
+
+    <h3>Hvorfor akkurat disse?</h3>
+    <p>Med kombinasjoner av AND, OR og XOR kan vi bygge opp <strong>all</strong> regnelogikk en datamaskin trenger — fra enkel addisjon til komplekse prosessorer med milliarder av gater.</p>
+  </div>
+
+  <div id="tab-adder" class="tab-content">
+    <h2>Full Adder — 1-bit addisjon</h2>
+    <p>En <strong>full adder</strong> legger sammen to enkeltstående bits (A og B) pluss en eventuell <strong>mente</strong> (Carry in) fra forrige posisjon. Den gir to outputs:</p>
+    <ul>
+      <li><strong>Sum (S)</strong> — resultatet for denne bit-posisjonen</li>
+      <li><strong>Carry out (Cout)</strong> — menten som sendes videre til neste posisjon</li>
+    </ul>
+
+    <h3>Sannhetstabell</h3>
+    <table class="truth-table">
+      <tr><th>A</th><th>B</th><th>Cin</th><th>Sum</th><th>Cout</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+    </table>
+
+    <h3>Kretsen i 5 gater</h3>
+    <p>En full adder bygges med bare 5 logiske gater:</p>
+    <ul>
+      <li><strong>XOR1:</strong> <code>P = A ⊕ B</code> — delvis sum</li>
+      <li><strong>XOR2:</strong> <code>S = P ⊕ Cin</code> — endelig sum</li>
+      <li><strong>AND1:</strong> <code>G1 = A · B</code> — genererer carry direkte</li>
+      <li><strong>AND2:</strong> <code>G2 = P · Cin</code> — propagerer carry</li>
+      <li><strong>OR:</strong> <code>Cout = G1 + G2</code> — kombinerer carry-signalene</li>
+    </ul>
+    <p>Tenk på det som å legge sammen to ensifrede desimaltall: <code>7 + 8 = 15</code>. Resultatet (5) er "sum" og etteren du "husker" er "carry".</p>
+
+    <h3>Analogi: Addisjon for hånd</h3>
+    <p>Når du legger sammen tall med penn og papir, starter du fra høyre og jobber mot venstre. Hvis summen av to sifre er 10 eller mer, skriver du ned resten og "bærer" (carry) en ener til neste kolonne. En full adder gjør akkurat det samme — men med binære sifre!</p>
+  </div>
+
+  <div id="tab-ripple" class="tab-content">
+    <h2>4-bit Ripple-Carry Adder</h2>
+    <p>For å legge sammen to 4-bits tall, kobler vi fire full adders i serie. Carry-signalet "bølger" (ripples) fra den minst signifikante biten (bit 0) til den mest signifikante (bit 3).</p>
+
+    <h3>Hvordan det fungerer</h3>
+    <ul>
+      <li><strong>FA0</strong> (bit 0): Legger sammen A0 + B0 + 0 (ingen carry inn). Gir S0 og C0.</li>
+      <li><strong>FA1</strong> (bit 1): Legger sammen A1 + B1 + C0. Gir S1 og C1.</li>
+      <li><strong>FA2</strong> (bit 2): Legger sammen A2 + B2 + C1. Gir S2 og C2.</li>
+      <li><strong>FA3</strong> (bit 3): Legger sammen A3 + B3 + C2. Gir S3 og C3.</li>
+      <li><strong>C3</strong> blir den 5. biten (S4) i resultatet.</li>
+    </ul>
+
+    <h3>Eksempel: 7 + 5 = 12</h3>
+    <p><code>0111₂ + 0101₂</code>:</p>
+    <table class="truth-table">
+      <tr><th></th><th>Bit 3</th><th>Bit 2</th><th>Bit 1</th><th>Bit 0</th></tr>
+      <tr><td>A</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>B</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>Carry</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+      <tr><td><strong>Sum</strong></td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+    </table>
+    <p>Resultat: <code>01100₂</code> = <strong>12</strong> ✓</p>
+
+    <h3>Hvorfor "Ripple"?</h3>
+    <p>Carry-signalet må beregnes i FA0 før FA1 kan starte ordentlig, og FA1 før FA2 osv. Signalet "bølger" gjennom kretsen — som dominobrikker som faller. Dette er den enkleste adder-designen, og det er denne animasjonen over viser!</p>
+
+    <h3>5-bit resultat</h3>
+    <p>4 bits + 4 bits kan gi maks 15 + 15 = 30, som trenger 5 bits (<code>11110₂</code>). Den ekstra biten (S4) er den siste carry-ut fra FA3.</p>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  State
+// ══════════════════════════════════════════════
+let valA = 7, valB = 5;
+let animSpeed = 5;
+let animTimers = [];
+let wireElements = {};
+let gateElements = {};
+
+// ══════════════════════════════════════════════
+//  Circuit layout constants
+// ══════════════════════════════════════════════
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const COL_W = 240;
+const COL_START = 100;
+const colX = i => COL_START + (3 - i) * COL_W; // FA0 on right, FA3 on left
+
+// Y positions (top to bottom flow: inputs at bottom, output at top)
+const Y = {
+  sumOut:     40,
+  orGate:    110,
+  and1Gate:  200,
+  and2Gate:  200,
+  xor2Gate:  310,
+  xor1Gate:  430,
+  inputBits: 550,
+  inputLabels: 590
+};
+
+// Colors
+const C_INACTIVE = '#2a2a3a';
+const C_ACTIVE   = '#00ff88';
+const C_ZERO     = '#ff444466';
+const C_WIRE_ZERO = '#331a1a';
+const C_GATE_INACTIVE = '#444466';
+
+// ══════════════════════════════════════════════
+//  Build SVG circuit
+// ══════════════════════════════════════════════
+function buildCircuit() {
+  const wiresG = document.getElementById('circuit-wires');
+  const gatesG = document.getElementById('circuit-gates');
+  const labelsG = document.getElementById('circuit-labels');
+  wiresG.innerHTML = '';
+  gatesG.innerHTML = '';
+  labelsG.innerHTML = '';
+  wireElements = {};
+  gateElements = {};
+
+  // Draw background dots
+  const dotsG = document.getElementById('bg-dots');
+  dotsG.innerHTML = '';
+  for (let x = 20; x < 1100; x += 30) {
+    for (let y = 20; y < 680; y += 30) {
+      const c = document.createElementNS(SVG_NS, 'circle');
+      c.setAttribute('cx', x);
+      c.setAttribute('cy', y);
+      c.setAttribute('r', 0.8);
+      c.setAttribute('fill', '#ffffff');
+      dotsG.appendChild(c);
+    }
+  }
+
+  // Build 4 full adder columns
+  for (let i = 0; i < 4; i++) {
+    buildFullAdder(i, wiresG, gatesG, labelsG);
+  }
+
+  // Carry chain wires between FAs
+  for (let i = 0; i < 3; i++) {
+    const fromX = colX(i) - 30;
+    const toX = colX(i + 1) + 70;
+    const yCarry = Y.orGate;
+    drawWire(wiresG, `carry-${i}-to-${i+1}`, [
+      {x: fromX, y: yCarry},
+      {x: fromX - 15, y: yCarry},
+      {x: fromX - 15, y: yCarry + 230},
+      {x: toX + 15, y: yCarry + 230},
+      {x: toX + 15, y: Y.xor2Gate + 15},
+      {x: toX, y: Y.xor2Gate + 15}
+    ]);
+  }
+
+  // FA0 carry-in = 0 (ground) label
+  const fa0CinX = colX(0) + 70;
+  addLabel(labelsG, fa0CinX + 12, Y.xor2Gate + 20, '0', '#556', 11);
+
+  // Carry-in wire for FA0 (short stub)
+  drawWire(wiresG, 'carry-in-0', [
+    {x: fa0CinX + 10, y: Y.xor2Gate + 15},
+    {x: fa0CinX, y: Y.xor2Gate + 15}
+  ]);
+
+  // Final carry out (S4)
+  const fa3X = colX(3);
+  drawWire(wiresG, 'carry-out-final', [
+    {x: fa3X + 20, y: Y.orGate - 15},
+    {x: fa3X + 20, y: Y.sumOut}
+  ]);
+  addLabel(labelsG, fa3X + 20, Y.sumOut - 8, 'S4', '#889', 10);
+
+  // Result bit circles at top
+  for (let i = 0; i < 5; i++) {
+    let bx;
+    if (i === 4) {
+      bx = colX(3) + 20;
+    } else {
+      bx = colX(i) + 20;
+    }
+  }
+
+  // Build result bits HTML
+  const rbDiv = document.getElementById('result-bits');
+  rbDiv.innerHTML = '';
+  for (let i = 4; i >= 0; i--) {
+    const d = document.createElement('div');
+    d.className = 'result-bit';
+    d.id = `rbit-${i}`;
+    d.textContent = '0';
+    rbDiv.appendChild(d);
+  }
+}
+
+function buildFullAdder(idx, wiresG, gatesG, labelsG) {
+  const cx = colX(idx);
+  const aX = cx;
+  const bX = cx + 40;
+  const cinX = cx + 60;
+
+  // Input bit indicators
+  addBitCircle(gatesG, `input-a-${idx}`, aX, Y.inputBits);
+  addBitCircle(gatesG, `input-b-${idx}`, bX, Y.inputBits);
+  addLabel(labelsG, aX, Y.inputLabels + 4, `A${idx}`, '#889', 10);
+  addLabel(labelsG, bX, Y.inputLabels + 4, `B${idx}`, '#889', 10);
+
+  // ── Wires: inputs down to XOR1 ──
+  drawWire(wiresG, `a${idx}-to-xor1`, [
+    {x: aX, y: Y.inputBits - 10},
+    {x: aX, y: Y.xor1Gate + 10}
+  ]);
+  drawWire(wiresG, `b${idx}-to-xor1`, [
+    {x: bX, y: Y.inputBits - 10},
+    {x: bX, y: Y.xor1Gate + 25}
+  ]);
+
+  // XOR1 gate
+  addGate(gatesG, `xor1-${idx}`, 'gate-xor', cx - 10, Y.xor1Gate, 60, 36);
+  addLabel(labelsG, cx + 20, Y.xor1Gate + 52, 'XOR', '#556', 8);
+
+  // XOR1 output wire → to XOR2 and AND2
+  const pX = cx + 20;
+  drawWire(wiresG, `xor1-${idx}-out`, [
+    {x: cx + 50, y: Y.xor1Gate + 18},
+    {x: cx + 60, y: Y.xor1Gate + 18},
+    {x: cx + 60, y: Y.xor1Gate - 20},
+    {x: pX, y: Y.xor1Gate - 20},
+    {x: pX, y: Y.xor2Gate + 10}
+  ]);
+
+  // Branch from P to AND2
+  drawWire(wiresG, `p${idx}-to-and2`, [
+    {x: pX, y: Y.xor2Gate + 10},
+    {x: pX, y: Y.and2Gate + 25}
+  ]);
+
+  // ── AND1 gate (A · B) ──
+  // Wires from A and B to AND1
+  drawWire(wiresG, `a${idx}-to-and1`, [
+    {x: aX, y: Y.xor1Gate + 10},
+    {x: aX - 20, y: Y.xor1Gate + 10},
+    {x: aX - 20, y: Y.and1Gate + 10}
+  ]);
+  drawWire(wiresG, `b${idx}-to-and1`, [
+    {x: bX, y: Y.xor1Gate + 25},
+    {x: bX - 40, y: Y.xor1Gate + 25},
+    {x: bX - 40, y: Y.and1Gate + 25}
+  ]);
+
+  addGate(gatesG, `and1-${idx}`, 'gate-and', cx - 50, Y.and1Gate, 56, 36);
+  addLabel(labelsG, cx - 22, Y.and1Gate + 52, 'AND', '#556', 8);
+
+  // AND1 output → OR gate
+  drawWire(wiresG, `and1-${idx}-out`, [
+    {x: cx - 50 + 56, y: Y.and1Gate + 18},
+    {x: cx + 10, y: Y.and1Gate + 18},
+    {x: cx + 10, y: Y.orGate + 10}
+  ]);
+
+  // ── Carry-in wire to XOR2 and AND2 ──
+  const cinWireX = cx + 60;
+  // XOR2 gate
+  addGate(gatesG, `xor2-${idx}`, 'gate-xor', cx - 10, Y.xor2Gate, 60, 36);
+  addLabel(labelsG, cx + 20, Y.xor2Gate + 52, 'XOR', '#556', 8);
+
+  // Cin wire into XOR2
+  drawWire(wiresG, `cin${idx}-to-xor2`, [
+    {x: cinWireX, y: Y.xor2Gate + 15},
+    {x: cx + 50, y: Y.xor2Gate + 25}
+  ]);
+
+  // AND2 gate
+  addGate(gatesG, `and2-${idx}`, 'gate-and', cx - 10, Y.and2Gate, 56, 36);
+  addLabel(labelsG, cx + 18, Y.and2Gate + 52, 'AND', '#556', 8);
+
+  // Cin wire into AND2
+  drawWire(wiresG, `cin${idx}-to-and2`, [
+    {x: cinWireX, y: Y.and2Gate + 15},
+    {x: cx + 46, y: Y.and2Gate + 25}
+  ]);
+
+  // AND2 output → OR gate
+  drawWire(wiresG, `and2-${idx}-out`, [
+    {x: cx + 46, y: Y.and2Gate + 18},
+    {x: cx + 55, y: Y.and2Gate + 18},
+    {x: cx + 55, y: Y.and2Gate - 20},
+    {x: cx + 30, y: Y.and2Gate - 20},
+    {x: cx + 30, y: Y.orGate + 25}
+  ]);
+
+  // ── OR gate ──
+  addGate(gatesG, `or-${idx}`, 'gate-or', cx - 10, Y.orGate, 60, 36);
+  addLabel(labelsG, cx + 20, Y.orGate + 52, 'OR', '#556', 8);
+
+  // OR output = carry out
+  drawWire(wiresG, `or-${idx}-out`, [
+    {x: cx + 50, y: Y.orGate + 18},
+    {x: cx + 60, y: Y.orGate + 18},
+    {x: cx + 60, y: Y.orGate - 15},
+    {x: cx + 20, y: Y.orGate - 15}
+  ]);
+
+  // ── XOR2 output = Sum ──
+  drawWire(wiresG, `sum-${idx}`, [
+    {x: cx + 50, y: Y.xor2Gate + 18},
+    {x: cx + 70, y: Y.xor2Gate + 18},
+    {x: cx + 70, y: Y.xor2Gate - 50},
+    {x: cx + 20, y: Y.xor2Gate - 50},
+    {x: cx + 20, y: Y.sumOut}
+  ]);
+  addLabel(labelsG, cx + 20, Y.sumOut - 8, `S${idx}`, '#889', 10);
+
+  // Column label
+  addLabel(labelsG, cx + 20, Y.inputLabels + 22, `FA${idx}`, '#334', 9);
+}
+
+// ── SVG helpers ──
+
+function drawWire(parent, id, points) {
+  const d = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+  const path = document.createElementNS(SVG_NS, 'path');
+  path.setAttribute('d', d);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', C_INACTIVE);
+  path.setAttribute('stroke-width', 2.5);
+  path.setAttribute('stroke-linecap', 'round');
+  path.setAttribute('stroke-linejoin', 'round');
+  path.setAttribute('id', `wire-${id}`);
+  parent.appendChild(path);
+  wireElements[id] = path;
+  return path;
+}
+
+function addGate(parent, id, symbolId, x, y, w, h) {
+  const use = document.createElementNS(SVG_NS, 'use');
+  use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', `#${symbolId}`);
+  use.setAttribute('x', x);
+  use.setAttribute('y', y);
+  use.setAttribute('width', w);
+  use.setAttribute('height', h);
+  use.setAttribute('id', `gate-el-${id}`);
+  use.style.color = C_GATE_INACTIVE;
+  parent.appendChild(use);
+  gateElements[id] = use;
+  return use;
+}
+
+function addBitCircle(parent, id, cx, cy) {
+  const c = document.createElementNS(SVG_NS, 'circle');
+  c.setAttribute('cx', cx);
+  c.setAttribute('cy', cy);
+  c.setAttribute('r', 8);
+  c.setAttribute('fill', '#111');
+  c.setAttribute('stroke', C_INACTIVE);
+  c.setAttribute('stroke-width', 2);
+  c.setAttribute('id', `bit-${id}`);
+  parent.appendChild(c);
+  gateElements[id] = c;
+  return c;
+}
+
+function addLabel(parent, x, y, text, fill, size) {
+  const t = document.createElementNS(SVG_NS, 'text');
+  t.setAttribute('x', x);
+  t.setAttribute('y', y);
+  t.setAttribute('fill', fill);
+  t.setAttribute('font-size', size);
+  t.setAttribute('text-anchor', 'middle');
+  t.setAttribute('font-family', 'monospace');
+  t.textContent = text;
+  parent.appendChild(t);
+  return t;
+}
+
+// ══════════════════════════════════════════════
+//  Circuit logic computation
+// ══════════════════════════════════════════════
+function computeCircuit(a, b) {
+  const bits = [];
+  let carry = 0;
+  for (let i = 0; i < 4; i++) {
+    const ai = (a >> i) & 1;
+    const bi = (b >> i) & 1;
+    const xor1 = ai ^ bi;     // P
+    const and1 = ai & bi;     // G1
+    const xor2 = xor1 ^ carry; // Sum
+    const and2 = xor1 & carry; // G2
+    const or1 = and1 | and2;  // Cout
+    bits.push({
+      idx: i, ai, bi, cin: carry,
+      xor1, and1, xor2, and2, or1,
+      sum: xor2, cout: or1
+    });
+    carry = or1;
+  }
+  return { bits, finalCarry: carry };
+}
+
+// ══════════════════════════════════════════════
+//  Animation system
+// ══════════════════════════════════════════════
+function clearAnimations() {
+  animTimers.forEach(t => clearTimeout(t));
+  animTimers = [];
+  // Reset all wires
+  Object.values(wireElements).forEach(el => {
+    el.setAttribute('stroke', C_INACTIVE);
+    el.removeAttribute('filter');
+    el.style.strokeDasharray = '';
+    el.style.strokeDashoffset = '';
+    el.style.animation = '';
+  });
+  // Reset gates
+  Object.values(gateElements).forEach(el => {
+    if (el.tagName === 'circle') {
+      el.setAttribute('fill', '#111');
+      el.setAttribute('stroke', C_INACTIVE);
+      el.removeAttribute('filter');
+    } else {
+      el.style.color = C_GATE_INACTIVE;
+      el.removeAttribute('filter');
+    }
+  });
+}
+
+function activateWire(id, value, delay) {
+  const el = wireElements[id];
+  if (!el) return;
+  const timer = setTimeout(() => {
+    const color = value ? C_ACTIVE : C_WIRE_ZERO;
+    const filterName = value ? 'url(#glow-green)' : '';
+    el.setAttribute('stroke', color);
+    el.setAttribute('stroke-width', value ? 3 : 2.5);
+    if (filterName) el.setAttribute('filter', filterName);
+
+    // Flow animation
+    const len = el.getTotalLength ? el.getTotalLength() : 100;
+    if (value) {
+      el.style.strokeDasharray = `${len * 0.15} ${len * 0.08}`;
+      el.style.strokeDashoffset = `${len}`;
+      el.style.transition = 'none';
+      requestAnimationFrame(() => {
+        el.style.transition = `stroke-dashoffset ${600 / animSpeed}ms linear`;
+        el.style.strokeDashoffset = '0';
+      });
+      // After flow animation completes, make solid
+      const solidTimer = setTimeout(() => {
+        el.style.strokeDasharray = '';
+        el.style.strokeDashoffset = '';
+        el.style.transition = '';
+      }, 650 / animSpeed);
+      animTimers.push(solidTimer);
+    }
+  }, delay);
+  animTimers.push(timer);
+}
+
+function activateGate(id, active, delay) {
+  const el = gateElements[id];
+  if (!el) return;
+  const timer = setTimeout(() => {
+    if (el.tagName === 'circle') {
+      // Bit circle
+      el.setAttribute('fill', active ? C_ACTIVE : '#1a0808');
+      el.setAttribute('stroke', active ? C_ACTIVE : '#442222');
+      if (active) el.setAttribute('filter', 'url(#glow-green)');
+    } else {
+      el.style.color = active ? C_ACTIVE : '#664444';
+      if (active) el.setAttribute('filter', 'url(#glow-gate)');
+    }
+  }, delay);
+  animTimers.push(timer);
+}
+
+function activateResultBit(bitIdx, value, delay) {
+  const timer = setTimeout(() => {
+    const el = document.getElementById(`rbit-${bitIdx}`);
+    if (!el) return;
+    el.textContent = value;
+    el.className = `result-bit ${value ? 'on' : 'off'}`;
+  }, delay);
+  animTimers.push(timer);
+}
+
+function runAnimation() {
+  clearAnimations();
+  const result = computeCircuit(valA, valB);
+  const baseDelay = 400 / animSpeed;
+  let t = 0;
+
+  for (let i = 0; i < 4; i++) {
+    const b = result.bits[i];
+    const d = t;
+
+    // 1. Light up input bits
+    activateGate(`input-a-${i}`, b.ai, d);
+    activateGate(`input-b-${i}`, b.bi, d);
+
+    // 2. Wires to XOR1 and AND1
+    activateWire(`a${i}-to-xor1`, b.ai, d + baseDelay * 0.5);
+    activateWire(`b${i}-to-xor1`, b.bi, d + baseDelay * 0.5);
+    activateWire(`a${i}-to-and1`, b.ai, d + baseDelay * 0.5);
+    activateWire(`b${i}-to-and1`, b.bi, d + baseDelay * 0.5);
+
+    // 3. XOR1 and AND1 activate
+    activateGate(`xor1-${i}`, true, d + baseDelay * 1.5);
+    activateGate(`and1-${i}`, true, d + baseDelay * 1.5);
+
+    // 4. XOR1 output and AND1 output
+    activateWire(`xor1-${i}-out`, b.xor1, d + baseDelay * 2);
+    activateWire(`and1-${i}-out`, b.and1, d + baseDelay * 2);
+
+    // 5. Carry-in wires (for i>0, comes from previous carry chain)
+    if (i === 0) {
+      activateWire(`carry-in-0`, 0, d + baseDelay * 2);
+    }
+
+    // 6. P wire to AND2
+    activateWire(`p${i}-to-and2`, b.xor1, d + baseDelay * 2.5);
+
+    // 7. Cin to XOR2 and AND2
+    activateWire(`cin${i}-to-xor2`, b.cin, d + baseDelay * 2.5);
+    activateWire(`cin${i}-to-and2`, b.cin, d + baseDelay * 2.5);
+
+    // 8. XOR2 and AND2 activate
+    activateGate(`xor2-${i}`, true, d + baseDelay * 3);
+    activateGate(`and2-${i}`, true, d + baseDelay * 3);
+
+    // 9. XOR2 output (sum)
+    activateWire(`sum-${i}`, b.sum, d + baseDelay * 3.5);
+    activateResultBit(i, b.sum, d + baseDelay * 4);
+
+    // 10. AND2 output → OR
+    activateWire(`and2-${i}-out`, b.and2, d + baseDelay * 3.5);
+
+    // 11. OR gate
+    activateGate(`or-${i}`, true, d + baseDelay * 4);
+    activateWire(`or-${i}-out`, b.cout, d + baseDelay * 4.5);
+
+    // 12. Carry chain to next FA
+    if (i < 3) {
+      activateWire(`carry-${i}-to-${i+1}`, b.cout, d + baseDelay * 5);
+    }
+
+    // Time offset for next FA (carry must arrive first)
+    t += baseDelay * 5.5;
+  }
+
+  // Final carry
+  const finalCarry = result.finalCarry;
+  activateWire('carry-out-final', finalCarry, t);
+  activateResultBit(4, finalCarry, t + baseDelay);
+
+  // Update decimal display
+  const totalDelay = t + baseDelay * 1.5;
+  const timer = setTimeout(() => {
+    const sum = valA + valB;
+    document.getElementById('result-decimal').textContent = `= ${sum}`;
+  }, totalDelay);
+  animTimers.push(timer);
+}
+
+// ══════════════════════════════════════════════
+//  Input controls
+// ══════════════════════════════════════════════
+function changeVal(which, delta) {
+  if (which === 'a') {
+    valA = Math.max(0, Math.min(15, valA + delta));
+  } else {
+    valB = Math.max(0, Math.min(15, valB + delta));
+  }
+  updateDisplay();
+  runAnimation();
+}
+
+function updateDisplay() {
+  document.getElementById('val-a').textContent = valA;
+  document.getElementById('val-b').textContent = valB;
+  document.getElementById('bin-a').textContent = valA.toString(2).padStart(4, '0');
+  document.getElementById('bin-b').textContent = valB.toString(2).padStart(4, '0');
+}
+
+// ══════════════════════════════════════════════
+//  Tab system
+// ══════════════════════════════════════════════
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  // Find the button that matches
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    if (btn.getAttribute('onclick').includes(tabId)) btn.classList.add('active');
+  });
+}
+
+// ══════════════════════════════════════════════
+//  Speed control
+// ══════════════════════════════════════════════
+document.getElementById('speed-slider').addEventListener('input', function() {
+  animSpeed = parseInt(this.value);
+  document.getElementById('speed-label').textContent = `${animSpeed}x`;
+});
+
+// ══════════════════════════════════════════════
+//  Init
+// ══════════════════════════════════════════════
+buildCircuit();
+updateDisplay();
+runAnimation();
+</script>
+</body>
+</html>
