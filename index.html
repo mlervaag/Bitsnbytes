@@ -7,129 +7,130 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --green:#00ff88;
-  --green-dim:#00ff8844;
-  --red-dim:#ff444466;
-  --bg:#0a0a1a;
-  --surface:#0d0d22;
-  --wire-off:#252540;
-  --wire-on:#00ff88;
-  --wire-zero:#3a1a1a;
-  --gate-off:#3a3a55;
-  --text-dim:#556;
-  --text-mid:#99a;
-  --text-bright:#dde;
+  --green:#00ff88; --green-dim:#00ff8833;
+  --cyan:#00ccff;  --cyan-dim:#00ccff33;
+  --mag:#ff66cc;   --mag-dim:#ff66cc33;
+  --orange:#ffaa33;--orange-dim:#ffaa3333;
+  --red-dim:#ff444444;
+  --bg:#0a0a1a; --surface:#0d0d22;
+  --wire-off:#1e1e32; --gate-off:#2e2e48;
+  --dim:#445; --mid:#88a; --bright:#dde;
 }
-body{
-  background:var(--bg);
-  color:var(--text-bright);
-  font-family:'Courier New',monospace;
-  min-height:100vh;
-  overflow-x:hidden;
-}
+body{background:var(--bg);color:var(--bright);font-family:'Courier New',monospace;min-height:100vh;overflow-x:hidden}
 
 /* ── Header ── */
-header{text-align:center;padding:16px 0 6px}
-header h1{
-  font-size:1.5rem;color:var(--green);
-  text-shadow:0 0 12px #00ff8844;letter-spacing:3px;
-}
-header p{font-size:.78rem;color:var(--text-dim);margin-top:2px}
+header{text-align:center;padding:12px 0 2px}
+header h1{font-size:1.3rem;color:var(--green);text-shadow:0 0 12px #00ff8844;letter-spacing:3px}
+header p{font-size:.68rem;color:var(--dim);margin-top:1px}
 
-/* ── Input + Result bar ── */
-#controls{
-  display:flex;justify-content:center;align-items:center;
-  gap:16px;padding:10px 12px;flex-wrap:wrap;
-}
-.val-box{
-  background:#111;border:1px solid #222;border-radius:10px;
-  padding:8px 16px;text-align:center;min-width:100px;
-}
-.val-box label{display:block;font-size:.65rem;color:var(--text-dim);margin-bottom:4px}
-.val-box .num{font-size:1.6rem;color:#fff;min-width:30px;display:inline-block}
-.val-box .bin{font-size:.75rem;color:var(--green);letter-spacing:2px;margin-top:2px}
-.val-box .btn-row{display:flex;gap:4px;justify-content:center;margin-top:4px}
-.val-box button{
-  width:28px;height:24px;border:1px solid var(--green-dim);
-  background:transparent;color:var(--green);font-size:.9rem;
-  border-radius:4px;cursor:pointer;transition:.15s;
-}
-.val-box button:hover{background:var(--green-dim)}
+/* ── Controls ── */
+#controls{display:flex;justify-content:center;align-items:center;gap:12px;padding:6px 10px 2px;flex-wrap:wrap}
+.val-box{background:#0c0c1e;border:1px solid #1a1a30;border-radius:8px;padding:5px 12px;text-align:center}
+.val-box.a-box{border-color:var(--cyan-dim)}
+.val-box.b-box{border-color:var(--mag-dim)}
+.val-box label{display:block;font-size:.58rem;color:var(--dim)}
+.val-box .num{font-size:1.4rem;display:inline-block}
+.a-box .num{color:var(--cyan)} .b-box .num{color:var(--mag)}
+.val-box .bin{font-size:.68rem;letter-spacing:2px;margin-top:1px}
+.a-box .bin{color:var(--cyan)} .b-box .bin{color:var(--mag)}
+.val-box .btn-row{display:flex;gap:3px;justify-content:center;margin-top:2px}
+.val-box button{width:24px;height:20px;border-radius:3px;cursor:pointer;font-size:.8rem;background:transparent;transition:.15s}
+.a-box button{border:1px solid var(--cyan-dim);color:var(--cyan)}
+.b-box button{border:1px solid var(--mag-dim);color:var(--mag)}
+.val-box button:hover{background:#ffffff11}
 .val-box button:active{transform:scale(.9)}
-.op{font-size:1.8rem;color:var(--green);text-shadow:0 0 8px #00ff8833}
-.result-box{
-  background:#0a1a12;border:1px solid #1a3a2a;border-radius:10px;
-  padding:8px 20px;text-align:center;
-}
-.result-box .bits{display:flex;gap:5px;justify-content:center;margin-bottom:2px}
-.result-box .bit{
-  width:28px;height:28px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.85rem;font-weight:bold;
-  border:2px solid #333;background:#111;color:#444;
-  transition:.3s;
-}
-.result-box .bit.on{
-  background:var(--green);color:var(--bg);border-color:var(--green);
-  box-shadow:0 0 6px var(--green),0 0 12px #00ff8844;
-}
-.result-box .bit.off{background:#1a0808;color:#ff444488;border-color:#331111}
-.result-box .dec{font-size:1.8rem;color:var(--green);text-shadow:0 0 8px #00ff8844}
-.result-box .lbl{font-size:.6rem;color:var(--text-dim)}
+.op{font-size:1.4rem;color:var(--mid)}
 
 /* ── Speed ── */
-#speed-bar{
-  text-align:center;padding:2px 0 4px;font-size:.7rem;color:var(--text-dim);
-}
-#speed-bar input{width:100px;accent-color:var(--green);vertical-align:middle}
+#speed-bar{text-align:center;padding:2px 0;font-size:.62rem;color:var(--dim)}
+#speed-bar input{width:80px;accent-color:var(--green);vertical-align:middle}
 #speed-bar span{color:var(--green)}
+#speed-bar button{background:none;border:1px solid var(--green-dim);color:var(--green);border-radius:3px;padding:1px 5px;cursor:pointer;font-size:.6rem;margin-left:4px}
 
-/* ── SVG Circuit ── */
-#circuit-wrap{
-  width:100%;max-width:1060px;margin:0 auto;
-  padding:0 8px;
+/* ══ Paper Addition ══ */
+#paper-wrap{
+  max-width:520px;margin:6px auto 2px;
+  background:#0c0c1f;border:1px solid #1a1a35;border-radius:8px;
+  padding:10px 16px 8px;
 }
+#paper-title{font-size:.7rem;color:var(--dim);text-align:center;margin-bottom:6px}
+#paper-grid{display:grid;grid-template-columns:50px repeat(4,1fr);gap:2px 4px;align-items:center;font-size:.78rem}
+.paper-label{text-align:right;padding-right:6px;font-size:.68rem}
+.paper-label.carry-l{color:var(--orange)}
+.paper-label.a-l{color:var(--cyan)}
+.paper-label.b-l{color:var(--mag)}
+.paper-label.sum-l{color:var(--green)}
+.paper-cell{
+  width:40px;height:34px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:6px;font-size:1rem;font-weight:bold;
+  background:#111;border:1.5px solid #222;color:#333;
+  transition:.3s;
+}
+.paper-cell.on-cyan{background:#00ccff22;border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 6px #00ccff44}
+.paper-cell.on-mag{background:#ff66cc22;border-color:var(--mag);color:var(--mag);box-shadow:0 0 6px #ff66cc44}
+.paper-cell.on-orange{background:#ffaa3322;border-color:var(--orange);color:var(--orange);box-shadow:0 0 6px #ffaa3344}
+.paper-cell.on-green{background:#00ff8822;border-color:var(--green);color:var(--green);box-shadow:0 0 8px #00ff8844}
+.paper-cell.off{background:#1a080822;border-color:#331111;color:#ff444466}
+.paper-sep{grid-column:1/-1;height:1px;background:#333;margin:2px 0}
+#paper-bits-label{
+  display:grid;grid-template-columns:50px repeat(4,1fr);
+  font-size:.55rem;color:#334;text-align:center;margin-top:1px;
+}
+#paper-bits-label span:first-child{text-align:right;padding-right:6px}
+
+/* ── Step description ── */
+#step-desc{
+  text-align:center;padding:4px 10px;
+  font-size:.72rem;color:var(--mid);min-height:1.2em;
+  font-family:'Segoe UI',sans-serif;
+}
+#step-desc strong{color:var(--green)}
+
+/* ── Color legend ── */
+#legend{
+  display:flex;justify-content:center;gap:14px;padding:2px 0 4px;
+  font-size:.58rem;font-family:'Segoe UI',sans-serif;
+}
+.leg{display:flex;align-items:center;gap:3px}
+.leg-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+/* ── SVG ── */
+#circuit-wrap{width:100%;max-width:1060px;margin:0 auto;padding:0 6px}
 #circuit-svg{width:100%;height:auto;display:block}
 
-/* ── Tooltip ── */
-.tooltip{
-  position:fixed;background:#111d;border:1px solid var(--green-dim);
-  color:var(--text-bright);font-size:.72rem;padding:4px 8px;
-  border-radius:4px;pointer-events:none;z-index:99;
-  backdrop-filter:blur(6px);display:none;
-  font-family:'Segoe UI',sans-serif;max-width:220px;
+/* ── Result ── */
+#result-bar{display:flex;justify-content:center;align-items:center;gap:14px;padding:8px 0 4px;flex-wrap:wrap}
+.result-bits{display:flex;gap:4px}
+.result-bit{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:bold;
+  border:2px solid #333;background:#111;color:#444;transition:.3s;
 }
+.result-bit.on{background:var(--green);color:var(--bg);border-color:var(--green);box-shadow:0 0 6px var(--green),0 0 12px #00ff8844}
+.result-bit.off{background:#1a0808;color:#ff444477;border-color:#331111}
+.result-dec{font-size:2rem;color:var(--green);text-shadow:0 0 10px #00ff8844}
+.result-label{font-size:.55rem;color:var(--dim);text-align:center}
+
+/* ── Tooltip ── */
+.tooltip{position:fixed;background:#111e;border:1px solid var(--green-dim);color:var(--bright);font-size:.68rem;padding:4px 8px;border-radius:4px;pointer-events:none;z-index:99;backdrop-filter:blur(6px);display:none;font-family:'Segoe UI',sans-serif;max-width:220px;line-height:1.4}
 
 /* ── Explanation ── */
-#explanation{max-width:860px;margin:24px auto 0;padding:0 16px 50px}
-.tab-nav{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:12px}
-.tab-btn{
-  padding:5px 12px;background:#111;border:1px solid #222;
-  color:var(--text-dim);font-size:.75rem;border-radius:6px 6px 0 0;
-  cursor:pointer;transition:.15s;font-family:'Segoe UI',sans-serif;
-}
+#explanation{max-width:860px;margin:18px auto 0;padding:0 16px 50px}
+.tab-nav{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:10px}
+.tab-btn{padding:4px 10px;background:#111;border:1px solid #222;color:var(--dim);font-size:.7rem;border-radius:6px 6px 0 0;cursor:pointer;transition:.15s;font-family:'Segoe UI',sans-serif}
 .tab-btn:hover{background:#1a1a2a;color:#aab}
 .tab-btn.active{background:var(--bg);border-color:var(--green-dim);border-bottom-color:var(--bg);color:var(--green)}
-.tab-content{display:none}
-.tab-content.active{display:block}
-#explanation h2{
-  color:var(--green);font-size:1.1rem;margin:22px 0 8px;
-  border-bottom:1px solid #1a2a1a;padding-bottom:4px;
-}
-#explanation h3{color:#88ccaa;font-size:.9rem;margin:14px 0 5px}
-#explanation p,#explanation li{
-  color:#bbb;font-size:.82rem;line-height:1.6;
-  font-family:'Segoe UI',Arial,sans-serif;
-}
+.tab-content{display:none}.tab-content.active{display:block}
+#explanation h2{color:var(--green);font-size:1rem;margin:18px 0 6px;border-bottom:1px solid #1a2a1a;padding-bottom:3px}
+#explanation h3{color:#88ccaa;font-size:.85rem;margin:12px 0 4px}
+#explanation p,#explanation li{color:#bbb;font-size:.78rem;line-height:1.55;font-family:'Segoe UI',Arial,sans-serif}
 #explanation ul{padding-left:18px;margin:4px 0}
-#explanation code{
-  background:#151525;color:var(--green);padding:1px 4px;
-  border-radius:3px;font-size:.8rem;
-}
-.tt{border-collapse:collapse;margin:6px 0 10px;font-size:.78rem}
-.tt th,.tt td{border:1px solid #2a2a3a;padding:3px 8px;text-align:center}
-.tt th{background:#151525;color:var(--green)}
-.tt td{color:#ccc}
+#explanation code{background:#151525;color:var(--green);padding:1px 4px;border-radius:3px;font-size:.76rem}
+.tt{border-collapse:collapse;margin:5px 0 8px;font-size:.74rem}
+.tt th,.tt td{border:1px solid #2a2a3a;padding:3px 7px;text-align:center}
+.tt th{background:#151525;color:var(--green)}.tt td{color:#ccc}
 </style>
 </head>
 <body>
@@ -139,62 +140,86 @@ header p{font-size:.78rem;color:var(--text-dim);margin-top:2px}
   <p>Interaktiv 4-bit Ripple-Carry Adder</p>
 </header>
 
-<!-- Controls -->
 <div id="controls">
-  <div class="val-box">
-    <label>Tall A (4 bit)</label>
-    <div class="num" id="val-a">7</div>
+  <div class="val-box a-box">
+    <label>Tall A</label>
+    <span class="num" id="val-a">7</span>
     <div class="bin" id="bin-a">0111</div>
-    <div class="btn-row">
-      <button onclick="changeVal('a',-1)" title="Mink A">-</button>
-      <button onclick="changeVal('a',1)" title="Oek A">+</button>
-    </div>
+    <div class="btn-row"><button onclick="changeVal('a',-1)">-</button><button onclick="changeVal('a',1)">+</button></div>
   </div>
   <div class="op">+</div>
-  <div class="val-box">
-    <label>Tall B (4 bit)</label>
-    <div class="num" id="val-b">5</div>
+  <div class="val-box b-box">
+    <label>Tall B</label>
+    <span class="num" id="val-b">5</span>
     <div class="bin" id="bin-b">0101</div>
-    <div class="btn-row">
-      <button onclick="changeVal('b',-1)" title="Mink B">-</button>
-      <button onclick="changeVal('b',1)" title="Oek B">+</button>
-    </div>
-  </div>
-  <div class="op">=</div>
-  <div class="result-box">
-    <div class="bits" id="result-bits"></div>
-    <div class="dec" id="result-dec">12</div>
-    <div class="lbl">S4 S3 S2 S1 S0</div>
+    <div class="btn-row"><button onclick="changeVal('b',-1)">-</button><button onclick="changeVal('b',1)">+</button></div>
   </div>
 </div>
 
-<!-- Speed -->
 <div id="speed-bar">
   Hastighet: <input type="range" id="speed-slider" min="1" max="10" value="4">
   <span id="speed-lbl">4x</span>
-  &nbsp;&nbsp;|&nbsp;&nbsp;
-  <button onclick="runAnimation()" style="background:none;border:1px solid var(--green-dim);color:var(--green);border-radius:4px;padding:2px 8px;cursor:pointer;font-size:.7rem">Spill av igjen</button>
+  <button onclick="runAnimation()">Spill av</button>
 </div>
 
-<!-- SVG Circuit -->
+<!-- ══ PAPER ADDITION ══ -->
+<div id="paper-wrap">
+  <div id="paper-title">Binaer addisjon &mdash; kolonne for kolonne</div>
+  <div id="paper-grid">
+    <div class="paper-label carry-l">Mente:</div>
+    <div class="paper-cell" id="pc-c3"></div>
+    <div class="paper-cell" id="pc-c2"></div>
+    <div class="paper-cell" id="pc-c1"></div>
+    <div class="paper-cell" id="pc-c0" style="color:#334;font-size:.7rem">0</div>
+
+    <div class="paper-label a-l">A:</div>
+    <div class="paper-cell" id="pc-a3"></div>
+    <div class="paper-cell" id="pc-a2"></div>
+    <div class="paper-cell" id="pc-a1"></div>
+    <div class="paper-cell" id="pc-a0"></div>
+
+    <div class="paper-label b-l">+ B:</div>
+    <div class="paper-cell" id="pc-b3"></div>
+    <div class="paper-cell" id="pc-b2"></div>
+    <div class="paper-cell" id="pc-b1"></div>
+    <div class="paper-cell" id="pc-b0"></div>
+
+    <div class="paper-sep"></div>
+
+    <div class="paper-label sum-l">Sum:</div>
+    <div class="paper-cell" id="pc-s3"></div>
+    <div class="paper-cell" id="pc-s2"></div>
+    <div class="paper-cell" id="pc-s1"></div>
+    <div class="paper-cell" id="pc-s0"></div>
+  </div>
+  <div id="paper-bits-label">
+    <span></span><span>Bit 3</span><span>Bit 2</span><span>Bit 1</span><span>Bit 0</span>
+  </div>
+</div>
+
+<div id="step-desc">&nbsp;</div>
+
+<div id="legend">
+  <div class="leg"><span class="leg-dot" style="background:var(--cyan)"></span> A-bits</div>
+  <div class="leg"><span class="leg-dot" style="background:var(--mag)"></span> B-bits</div>
+  <div class="leg"><span class="leg-dot" style="background:var(--orange)"></span> Mente (carry)</div>
+  <div class="leg"><span class="leg-dot" style="background:var(--green)"></span> Sum (resultat)</div>
+</div>
+
+<!-- ══ SVG CIRCUIT ══ -->
 <div id="circuit-wrap">
-  <svg id="circuit-svg" viewBox="0 0 1040 520" xmlns="http://www.w3.org/2000/svg">
+  <svg id="circuit-svg" viewBox="0 0 1060 500" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <filter id="glow-g" x="-40%" y="-40%" width="180%" height="180%">
-        <feGaussianBlur stdDeviation="2.5" result="b"/>
-        <feFlood flood-color="#00ff88" flood-opacity="0.5" result="c"/>
-        <feComposite in="c" in2="b" operator="in" result="s"/>
-        <feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-      <filter id="glow-gate" x="-30%" y="-30%" width="160%" height="160%">
-        <feGaussianBlur stdDeviation="2" result="b"/>
-        <feFlood flood-color="#00ff88" flood-opacity="0.3" result="c"/>
-        <feComposite in="c" in2="b" operator="in" result="s"/>
-        <feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
+      <filter id="gl-g" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.5" result="b"/><feFlood flood-color="#00ff88" flood-opacity=".5" result="c"/><feComposite in="c" in2="b" operator="in" result="s"/><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="gl-c" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2" result="b"/><feFlood flood-color="#00ccff" flood-opacity=".5" result="c"/><feComposite in="c" in2="b" operator="in" result="s"/><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="gl-m" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2" result="b"/><feFlood flood-color="#ff66cc" flood-opacity=".5" result="c"/><feComposite in="c" in2="b" operator="in" result="s"/><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="gl-o" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2" result="b"/><feFlood flood-color="#ffaa33" flood-opacity=".5" result="c"/><feComposite in="c" in2="b" operator="in" result="s"/><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="gl-gate" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.5" result="b"/><feFlood flood-color="#00ff88" flood-opacity=".25" result="c"/><feComposite in="c" in2="b" operator="in" result="s"/><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#2a2a40"/></marker>
     </defs>
-    <g id="bg-dots" opacity="0.06"></g>
+    <g id="bg-dots" opacity=".04"></g>
     <g id="fa-boxes"></g>
+    <g id="wires-carry"></g>
     <g id="wires"></g>
     <g id="gates"></g>
     <g id="labels"></g>
@@ -202,10 +227,21 @@ header p{font-size:.78rem;color:var(--text-dim);margin-top:2px}
   </svg>
 </div>
 
-<!-- Tooltip -->
+<!-- ══ RESULT ══ -->
+<div id="result-bar">
+  <div>
+    <div class="result-bits" id="result-bits"></div>
+    <div class="result-label">S4 &nbsp;S3 &nbsp;S2 &nbsp;S1 &nbsp;S0</div>
+  </div>
+  <div>
+    <div class="result-dec" id="result-dec">= ?</div>
+    <div class="result-label">desimal</div>
+  </div>
+</div>
+
 <div class="tooltip" id="tooltip"></div>
 
-<!-- Explanation -->
+<!-- ══ EXPLANATION ══ -->
 <div id="explanation">
   <div class="tab-nav">
     <button class="tab-btn active" onclick="showTab('tab-binary')">Binaere tall</button>
@@ -215,21 +251,17 @@ header p{font-size:.78rem;color:var(--text-dim);margin-top:2px}
     <button class="tab-btn" onclick="showTab('tab-real')">I virkeligheten</button>
   </div>
 
-  <!-- Tab: Binary -->
   <div id="tab-binary" class="tab-content active">
     <h2>Hva er binaere tall?</h2>
-    <p>Vi mennesker bruker <strong>desimalsystemet</strong> (base 10) med sifrene 0-9. Datamaskiner bruker <strong>binaersystemet</strong> (base 2) med bare to sifre: <code>0</code> og <code>1</code>.</p>
-    <p>Hvert siffer i et binaert tall kalles en <strong>bit</strong> (binary digit). En bit kan enten vaere av (0) eller paa (1) &mdash; akkurat som en lysbryter.</p>
+    <p>Vi bruker <strong>desimalsystemet</strong> (base 10) med sifrene 0-9. Datamaskiner bruker <strong>binaersystemet</strong> (base 2) med bare <code>0</code> og <code>1</code>.</p>
+    <p>Hvert siffer kalles en <strong>bit</strong>. En bit er enten av (0) eller paa (1) &mdash; som en lysbryter.</p>
     <h3>Posisjonsverdi</h3>
-    <p>Akkurat som i desimalsystemet har hvert siffer en verdi basert paa sin posisjon, men med potenser av 2:</p>
     <table class="tt">
       <tr><th>Posisjon</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
       <tr><td>Verdi</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
-      <tr><td>2<sup>n</sup></td><td>2&sup3;</td><td>2&sup2;</td><td>2&sup1;</td><td>2&sup0;</td></tr>
     </table>
-    <p>Eksempel: <code>1101</code> = 1&times;8 + 1&times;4 + 0&times;2 + 1&times;1 = <strong>13</strong></p>
-    <h3>4 bits = tall fra 0 til 15</h3>
-    <p>Med 4 bits kan vi representere 2&sup4; = 16 forskjellige verdier (0&ndash;15):</p>
+    <p>Eksempel: <code>1101</code> = 8 + 4 + 0 + 1 = <strong>13</strong></p>
+    <h3>4 bits = 0 til 15</h3>
     <table class="tt">
       <tr><th>Des.</th><th>Bin.</th><th>Des.</th><th>Bin.</th><th>Des.</th><th>Bin.</th><th>Des.</th><th>Bin.</th></tr>
       <tr><td>0</td><td>0000</td><td>4</td><td>0100</td><td>8</td><td>1000</td><td>12</td><td>1100</td></tr>
@@ -238,625 +270,484 @@ header p{font-size:.78rem;color:var(--text-dim);margin-top:2px}
       <tr><td>3</td><td>0011</td><td>7</td><td>0111</td><td>11</td><td>1011</td><td>15</td><td>1111</td></tr>
     </table>
     <h3>Hvorfor binaert?</h3>
-    <p>Elektroniske kretser bruker spenningsnivaaer for aa representere data. Det er mye enklere aa skille mellom to nivaaer (hoey/lav spenning = 1/0) enn ti nivaaer. Derfor er binaert det naturlige &laquo;spraaket&raquo; for datamaskiner.</p>
+    <p>Elektronikk kan enkelt skille mellom to spenningsnivaaer (hoey/lav = 1/0), men ikke ti. Binaert er derfor det naturlige &laquo;spraaket&raquo; for datamaskiner.</p>
   </div>
 
-  <!-- Tab: Gates -->
   <div id="tab-gates" class="tab-content">
     <h2>Logiske gater</h2>
-    <p>Logiske gater er de grunnleggende byggesteinene i alle digitale kretser. Hver gate tar inn ett eller to binaere signaler og gir ut ett signal.</p>
+    <p>Byggesteinene i alle digitale kretser. Tar inn to bits, gir ut en bit.</p>
     <h3>AND (&laquo;og&raquo;)</h3>
-    <p>Gir <code>1</code> bare naar <strong>begge</strong> inngangene er <code>1</code>.</p>
-    <table class="tt"><tr><th>A</th><th>B</th><th>A AND B</th></tr>
-      <tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr>
-      <tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr>
-    </table>
+    <p>Gir <code>1</code> bare naar <strong>begge</strong> er <code>1</code>.</p>
+    <table class="tt"><tr><th>A</th><th>B</th><th>AND</th></tr><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></table>
     <h3>OR (&laquo;eller&raquo;)</h3>
-    <p>Gir <code>1</code> naar <strong>minst en</strong> av inngangene er <code>1</code>.</p>
-    <table class="tt"><tr><th>A</th><th>B</th><th>A OR B</th></tr>
-      <tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr>
-      <tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td></tr>
-    </table>
+    <p>Gir <code>1</code> naar <strong>minst en</strong> er <code>1</code>.</p>
+    <table class="tt"><tr><th>A</th><th>B</th><th>OR</th></tr><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td></tr></table>
     <h3>XOR (&laquo;eksklusiv eller&raquo;)</h3>
     <p>Gir <code>1</code> naar inngangene er <strong>forskjellige</strong>.</p>
-    <table class="tt"><tr><th>A</th><th>B</th><th>A XOR B</th></tr>
-      <tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr>
-      <tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr>
-    </table>
-    <p>XOR er nokkelen til addisjon: <code>1 + 1 = 10</code> (sum=0, mente=1) &mdash; XOR gir nettopp sum-biten!</p>
-    <h3>Hvorfor disse tre?</h3>
-    <p>Med kombinasjoner av AND, OR og XOR kan vi bygge opp <strong>all</strong> regnelogikk en datamaskin trenger &mdash; fra enkel addisjon til komplekse prosessorer.</p>
+    <table class="tt"><tr><th>A</th><th>B</th><th>XOR</th></tr><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></table>
+    <p>XOR er nokkelen til addisjon: <code>1 + 1 = 10</code> &mdash; XOR gir sum-biten (0), AND gir menten (1)!</p>
   </div>
 
-  <!-- Tab: Full Adder -->
   <div id="tab-adder" class="tab-content">
     <h2>Full Adder &mdash; 1-bit addisjon</h2>
-    <p>En <strong>full adder</strong> legger sammen to bits (A og B) pluss en eventuell <strong>mente</strong> (Carry&nbsp;in) fra forrige posisjon. Den gir:</p>
-    <ul>
-      <li><strong>Sum (S)</strong> &mdash; resultatet for denne posisjonen</li>
-      <li><strong>Carry out (Cout)</strong> &mdash; menten videre til neste posisjon</li>
-    </ul>
+    <p>Legger sammen to bits (A, B) pluss en <strong>mente</strong> (Carry in). Gir:</p>
+    <ul><li><strong>Sum (S)</strong> &mdash; resultatet</li><li><strong>Carry out (Cout)</strong> &mdash; menten videre</li></ul>
     <h3>Sannhetstabell</h3>
     <table class="tt">
       <tr><th>A</th><th>B</th><th>Cin</th><th>Sum</th><th>Cout</th></tr>
-      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-      <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
-      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
-      <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
-      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
-      <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
-      <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
-      <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
     </table>
-    <h3>Kretsen i 5 gater</h3>
+    <h3>5 gater</h3>
     <ul>
       <li><strong>XOR1:</strong> <code>P = A XOR B</code> &mdash; delvis sum</li>
+      <li><strong>AND1:</strong> <code>G = A AND B</code> &mdash; direkte carry</li>
       <li><strong>XOR2:</strong> <code>S = P XOR Cin</code> &mdash; endelig sum</li>
-      <li><strong>AND1:</strong> <code>G = A AND B</code> &mdash; genererer carry</li>
-      <li><strong>AND2:</strong> <code>H = P AND Cin</code> &mdash; propagerer carry</li>
-      <li><strong>OR:</strong> <code>Cout = G OR H</code> &mdash; kombinerer</li>
+      <li><strong>AND2:</strong> <code>H = P AND Cin</code> &mdash; propagert carry</li>
+      <li><strong>OR:</strong> <code>Cout = G OR H</code> &mdash; total carry</li>
     </ul>
-    <h3>Analogi</h3>
-    <p>Naar du legger sammen <code>7 + 8 = 15</code> for haand, skriver du ned 5 og &laquo;baerer&raquo; 1 til neste kolonne. Full adder gjoer akkurat det samme &mdash; men med binaere sifre!</p>
   </div>
 
-  <!-- Tab: Ripple-Carry -->
   <div id="tab-ripple" class="tab-content">
     <h2>4-bit Ripple-Carry Adder</h2>
-    <p>For aa legge sammen to 4-bits tall kobler vi fire full adders i serie. Carry-signalet &laquo;boelger&raquo; (ripples) fra bit 0 til bit 3.</p>
-    <h3>Flyten</h3>
+    <p>Fire full adders i serie. Carry &laquo;boelger&raquo; fra bit 0 til bit 3.</p>
     <ul>
       <li><strong>FA0:</strong> A0 + B0 + 0 &rarr; S0, C0</li>
       <li><strong>FA1:</strong> A1 + B1 + C0 &rarr; S1, C1</li>
       <li><strong>FA2:</strong> A2 + B2 + C1 &rarr; S2, C2</li>
-      <li><strong>FA3:</strong> A3 + B3 + C2 &rarr; S3, C3 (= S4)</li>
+      <li><strong>FA3:</strong> A3 + B3 + C2 &rarr; S3, S4</li>
     </ul>
-    <h3>Eksempel: 7 + 5 = 12</h3>
-    <table class="tt">
-      <tr><th></th><th>Bit 3</th><th>Bit 2</th><th>Bit 1</th><th>Bit 0</th></tr>
-      <tr><td>A</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
-      <tr><td>B</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
-      <tr><td>Carry</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
-      <tr><td><strong>Sum</strong></td><td>1</td><td>1</td><td>0</td><td>0</td></tr>
-    </table>
-    <p>Resultat: <code>01100</code> = <strong>12</strong></p>
     <h3>Hvorfor &laquo;Ripple&raquo;?</h3>
-    <p>FA0 maa beregnes foer FA1 kan starte, osv. Signalet &laquo;boelger&raquo; gjennom kretsen som dominobrikker. Animasjonen over viser nettopp dette!</p>
-    <h3>5-bit resultat</h3>
-    <p>4 + 4 bits kan gi maks 15 + 15 = 30, som trenger 5 bits. Den 5. biten (S4) er den siste carry-en fra FA3.</p>
+    <p>FA0 maa beregnes foer FA1 kan starte, osv. Menten &laquo;boelger&raquo; gjennom &mdash; som dominobrikker. Se animasjonen!</p>
   </div>
 
-  <!-- Tab: Real world -->
   <div id="tab-real" class="tab-content">
     <h2>I virkeligheten</h2>
-    <h3>Fra gater til prosessor</h3>
-    <p>En moderne prosessor inneholder <strong>milliarder</strong> av logiske gater. ALU-en (Arithmetic Logic Unit) &mdash; &laquo;regnemaskinen&raquo; inne i prosessoren &mdash; bygger paa noyaktig de samme prinsippene som denne 4-bit adderen, bare mye stoerre (64-bit) og raskere.</p>
-    <h3>Carry-Lookahead</h3>
-    <p>Ripple-carry er enkel, men treg for mange bits fordi carry maa &laquo;boelge&raquo; gjennom alle trinn. I praksis bruker man <strong>carry-lookahead</strong> som beregner alle carry-verdier parallelt. Resultatet: addisjon paa under ett nanosekund!</p>
-    <h3>Transistorer</h3>
-    <p>Hver logisk gate bygges av <strong>transistorer</strong> &mdash; smaa elektroniske brytere. En AND-gate trenger ca. 6 transistorer, en XOR ca. 8-12. Vaar 4-bit adder med 20 gater trenger rundt 150-200 transistorer.</p>
-    <h3>Fra sand til krets</h3>
-    <p>Transistorer lages av <strong>silisium</strong> &mdash; raffinert sand! Gjennom fotolitografi etses milliarder av transistorer inn i en brikke paa noen faa kvadratcentimeter. Hver transistor er bare noen faa nanometer stor (1 nm = 0.000001 mm).</p>
+    <p>En moderne CPU har <strong>milliarder</strong> gater. ALU-en bruker samme prinsipp, men 64-bit og med <strong>carry-lookahead</strong> for parallell carry &mdash; addisjon paa under ett nanosekund!</p>
+    <p>Gater bygges av <strong>transistorer</strong> (smaa elektroniske brytere i silisium). Vaar 4-bit adder med 20 gater trenger ~150-200 transistorer. En moderne brikke har transistorer paa bare noen faa nanometer.</p>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════
-//  CONFIG & STATE
-// ══════════════════════════════════════════════════════
-const NS = 'http://www.w3.org/2000/svg';
-let valA = 7, valB = 5, animSpeed = 4;
-let timers = [], wires = {}, gates = {}, sigs = {};
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+const NS='http://www.w3.org/2000/svg';
+let valA=7,valB=5,animSpeed=4,timers=[],EW={},EG={},ES={};
 
-// ── Layout: 4 full adders, right-to-left (FA0=right, FA3=left) ──
-// Each FA is a 220px-wide column
-const FA_W = 240, FA_PAD = 30;
-const faX = i => 40 + (3 - i) * FA_W; // left edge of FA box
+// ── Layout ──
+const FA_W=230;
+const faL=i=>50+(3-i)*FA_W;
+const faCx=i=>faL(i)+FA_W/2;
+const GW=50,GH=26;
 
-// Vertical positions within each FA (top-down flow)
-const LY = {
-  inputLabel: 18,   // "A3  B3"
-  inputDot:   40,   // bit circles
-  wireIn:     54,
-  xor1:       90,   // XOR1 gate
-  and1:       90,   // AND1 gate (offset right)
-  mid:       155,   // P-wire merge point
-  xor2:      175,   // XOR2 gate
-  and2:      175,   // AND2 gate
-  or:        260,   // OR gate
-  wireOut:   310,
-  carryY:    340,   // carry chain y
-  sumDot:    330,   // sum output dot
-  sumLabel:  355,
-  boxTop:    26,
-  boxBot:    365,
+// Y coords — top-to-bottom: input → gates → carry → output
+const Y={
+  aLbl:16, aDot:36,
+  bLbl:60, bDot:78,
+  arr1:96,
+  boxT:106,
+  xor1:122, and1:122,
+  pY:172,
+  xor2:190, and2:190,
+  or:262,
+  boxB:308,
+  cOut:324, cChain:354,
+  arr2:382,
+  sDot:406, sLbl:430,
 };
 
-// Gate dimensions
-const GW = 56, GH = 30;
-
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════
 //  SVG HELPERS
-// ══════════════════════════════════════════════════════
-function el(tag, attrs, parent) {
-  const e = document.createElementNS(NS, tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (k === 'text') { e.textContent = v; continue; }
-    if (k === 'href') { e.setAttributeNS('http://www.w3.org/1999/xlink', 'href', v); continue; }
-    e.setAttribute(k, v);
-  }
-  if (parent) parent.appendChild(e);
-  return e;
-}
+// ══════════════════════════════════════════
+function mk(tag,a,p){const e=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(a)){if(k==='text'){e.textContent=v;continue}e.setAttribute(k,v)}if(p)p.appendChild(e);return e}
+function addW(id,pts,p,a){const d=pts.map((q,i)=>`${i?'L':'M'}${q[0]},${q[1]}`).join(' ');const e=mk('path',Object.assign({d,fill:'none',stroke:'var(--wire-off)','stroke-width':2,'stroke-linecap':'round','stroke-linejoin':'round',id:'w-'+id},a||{}),p);EW[id]=e;return e}
+function addGate(id,type,x,y,p){const g=mk('g',{id:'g-'+id,transform:`translate(${x},${y})`},p);if(type==='XOR'){mk('path',{d:`M3,0 Q${GW/2},${GH/2} 3,${GH}`,fill:'none',stroke:'var(--gate-off)','stroke-width':1.3},g);mk('path',{d:`M7,0 Q${GW/2+2},${GH/2} 7,${GH} Q${GW-5},${GH} ${GW-1},${GH/2} Q${GW-5},0 7,0 Z`,fill:'var(--surface)',stroke:'var(--gate-off)','stroke-width':1.3},g)}else if(type==='AND'){mk('path',{d:`M7,0 L7,${GH} L${GW/2},${GH} Q${GW-1},${GH} ${GW-1},${GH/2} Q${GW-1},0 ${GW/2},0 Z`,fill:'var(--surface)',stroke:'var(--gate-off)','stroke-width':1.3},g)}else{mk('path',{d:`M5,0 Q${GW/2},${GH/2} 5,${GH} Q${GW/2-2},${GH} ${GW-1},${GH/2} Q${GW/2-2},0 5,0 Z`,fill:'var(--surface)',stroke:'var(--gate-off)','stroke-width':1.3},g)}mk('text',{x:GW/2,y:GH/2+4,'text-anchor':'middle','font-size':7.5,fill:'var(--gate-off)','font-family':'monospace','font-weight':'bold',text:type},g);EG[id]=g;return g}
+function addDot(id,cx,cy,r,p,cls){const c=mk('circle',{cx,cy,r,fill:'#111',stroke:'var(--wire-off)','stroke-width':1.6,id:'d-'+id,'data-cls':cls||''},p);EG[id]=c;return c}
+function addTxt(x,y,t,f,s,p,o){return mk('text',Object.assign({x,y,'text-anchor':'middle','font-size':s,fill:f,'font-family':'monospace',text:t},o||{}),p)}
+function addSig(id,x,y,p){const t=mk('text',{x,y,'text-anchor':'middle','font-size':8,fill:'transparent','font-family':'monospace',text:'','font-weight':'bold'},p);ES[id]=t;return t}
 
-function wire(id, pts, parent) {
-  const d = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0]},${p[1]}`).join(' ');
-  const p = el('path', {d, fill:'none', stroke:'var(--wire-off)', 'stroke-width':2.2,
-    'stroke-linecap':'round', 'stroke-linejoin':'round', id:'w-'+id}, parent);
-  wires[id] = p;
-  return p;
-}
+// ══════════════════════════════════════════
+//  BUILD
+// ══════════════════════════════════════════
+function buildCircuit(){
+  ['bg-dots','fa-boxes','wires-carry','wires','gates','labels','signals'].forEach(id=>document.getElementById(id).innerHTML='');
+  EW={};EG={};ES={};
+  const dotsG=document.getElementById('bg-dots');
+  const boxG=document.getElementById('fa-boxes');
+  const carryG=document.getElementById('wires-carry');
+  const wireG=document.getElementById('wires');
+  const gateG=document.getElementById('gates');
+  const lblG=document.getElementById('labels');
+  const sigG=document.getElementById('signals');
 
-function gateBox(id, type, x, y, parent) {
-  const g = el('g', {id:'g-'+id, transform:`translate(${x},${y})`}, parent);
-  // Gate body
-  if (type === 'XOR') {
-    el('path', {d:`M4,0 Q${GW/2},${GH/2} 4,${GH}`, fill:'none', stroke:'var(--gate-off)', 'stroke-width':1.5}, g);
-    el('path', {d:`M8,0 Q${GW/2+4},${GH/2} 8,${GH} Q${GW-8},${GH} ${GW-4},${GH/2} Q${GW-8},0 8,0 Z`,
-      fill:'var(--surface)', stroke:'var(--gate-off)', 'stroke-width':1.5}, g);
-  } else if (type === 'AND') {
-    el('path', {d:`M8,0 L8,${GH} L${GW/2},${GH} Q${GW-4},${GH} ${GW-4},${GH/2} Q${GW-4},0 ${GW/2},0 Z`,
-      fill:'var(--surface)', stroke:'var(--gate-off)', 'stroke-width':1.5}, g);
-  } else { // OR
-    el('path', {d:`M6,0 Q${GW/2+2},${GH/2} 6,${GH} Q${GW/2},${GH} ${GW-4},${GH/2} Q${GW/2},0 6,0 Z`,
-      fill:'var(--surface)', stroke:'var(--gate-off)', 'stroke-width':1.5}, g);
-  }
-  // Label
-  el('text', {x:GW/2, y:GH/2+4, 'text-anchor':'middle', 'font-size':9,
-    fill:'var(--gate-off)', 'font-family':'monospace', 'font-weight':'bold', text:type}, g);
-  gates[id] = g;
-  return g;
-}
+  for(let x=10;x<1060;x+=20)for(let y=10;y<500;y+=20)mk('circle',{cx:x,cy:y,r:.4,fill:'#fff'},dotsG);
 
-function dot(id, cx, cy, r, parent) {
-  const c = el('circle', {cx, cy, r, fill:'#111', stroke:'var(--wire-off)', 'stroke-width':1.8, id:'d-'+id}, parent);
-  gates[id] = c;
-  return c;
-}
+  // MSB / LSB
+  addTxt(faL(3)+30,Y.aLbl-4,'MSB','#222838',7,lblG);
+  addTxt(faL(0)+FA_W-30,Y.aLbl-4,'LSB','#222838',7,lblG);
 
-function label(x, y, text, color, size, parent, anchor) {
-  return el('text', {x, y, 'text-anchor':anchor||'middle', 'font-size':size,
-    fill:color, 'font-family':'monospace', text}, parent);
-}
+  for(let i=0;i<4;i++){
+    const lx=faL(i),cx=faCx(i);
+    const aX=cx-20,bX=cx+20;
 
-function sigLabel(id, x, y, parent) {
-  const t = el('text', {x, y, 'text-anchor':'middle', 'font-size':8,
-    fill:'#555', 'font-family':'monospace', text:'', 'font-weight':'bold'}, parent);
-  sigs[id] = t;
-  return t;
-}
+    // FA box
+    mk('rect',{x:lx+16,y:Y.boxT,width:FA_W-32,height:Y.boxB-Y.boxT,rx:6,fill:'#0b0b1c',stroke:'#181835','stroke-width':1},boxG);
+    addTxt(cx,Y.boxB+13,`FA${i}`,'#222838',9,lblG);
 
-// ══════════════════════════════════════════════════════
-//  BUILD CIRCUIT
-// ══════════════════════════════════════════════════════
-function buildCircuit() {
-  const svg = document.getElementById('circuit-svg');
-  ['bg-dots','fa-boxes','wires','gates','labels','signals'].forEach(id => {
-    document.getElementById(id).innerHTML = '';
-  });
-  wires = {}; gates = {}; sigs = {};
+    // Flow arrows
+    mk('path',{d:`M${cx},${Y.arr1} L${cx},${Y.boxT-3}`,stroke:'#222838','stroke-width':1,fill:'none','marker-end':'url(#arr)'},lblG);
+    mk('path',{d:`M${cx-10},${Y.arr2-6} L${cx-10},${Y.sDot-14}`,stroke:'#222838','stroke-width':1,fill:'none','marker-end':'url(#arr)'},lblG);
 
-  const dotsG = document.getElementById('bg-dots');
-  const boxG = document.getElementById('fa-boxes');
-  const wireG = document.getElementById('wires');
-  const gateG = document.getElementById('gates');
-  const lblG = document.getElementById('labels');
-  const sigG = document.getElementById('signals');
+    // ── Input A (cyan) ──
+    addTxt(aX,Y.aLbl,`A${i}`,'#00ccff66',8,lblG);
+    addDot(`a${i}`,aX,Y.aDot,7,gateG,'a');
+    addSig(`va${i}`,aX,Y.aDot+3,sigG);
 
-  // BG dots
-  for (let x = 10; x < 1040; x += 24)
-    for (let y = 10; y < 520; y += 24)
-      el('circle', {cx:x, cy:y, r:.6, fill:'#fff'}, dotsG);
+    // ── Input B (magenta) ──
+    addTxt(bX,Y.bLbl,`B${i}`,'#ff66cc66',8,lblG);
+    addDot(`b${i}`,bX,Y.bDot,7,gateG,'b');
+    addSig(`vb${i}`,bX,Y.bDot+3,sigG);
 
-  // Title labels at very top
-  label(520, 12, 'MSB                                                                                          LSB', '#333', 8, lblG);
+    // ── Wires: inputs down ──
+    addW(`a${i}-d`,[[aX,Y.aDot+7],[aX,Y.xor1+6]],wireG);
+    addW(`b${i}-d`,[[bX,Y.bDot+7],[bX,Y.xor1+20]],wireG);
 
-  for (let i = 0; i < 4; i++) {
-    const fx = faX(i); // left x of FA column
-    const cx = fx + FA_W/2; // center x
-    const aX = cx - 22;  // A input x
-    const bX = cx + 22;  // B input x
+    // ── Layer 1: XOR1 + AND1 ──
+    const x1=cx-GW-5, a1x=cx+5;
+    addGate(`xor1-${i}`,'XOR',x1,Y.xor1,gateG);
+    addGate(`and1-${i}`,'AND',a1x,Y.and1,gateG);
 
-    // ── FA box ──
-    el('rect', {x:fx+15, y:LY.boxTop, width:FA_W-30, height:LY.boxBot-LY.boxTop,
-      rx:8, ry:8, fill:'none', stroke:'#1a1a30', 'stroke-width':1, 'stroke-dasharray':'4,4'}, boxG);
-    label(cx, LY.boxBot+16, `FA${i}`, '#2a2a45', 11, lblG);
+    addW(`a${i}-xor1`,[[aX,Y.xor1+6],[x1+8,Y.xor1+6]],wireG);
+    addW(`b${i}-xor1`,[[bX,Y.xor1+20],[x1+8,Y.xor1+20]],wireG);
+    addW(`a${i}-and1`,[[aX,Y.xor1+6],[a1x+8,Y.and1+6]],wireG);
+    addW(`b${i}-and1`,[[bX,Y.xor1+20],[a1x+8,Y.and1+20]],wireG);
 
-    // ── Input labels & dots ──
-    label(aX, LY.inputLabel, `A${i}`, 'var(--text-mid)', 10, lblG);
-    label(bX, LY.inputLabel, `B${i}`, 'var(--text-mid)', 10, lblG);
-    dot(`a${i}`, aX, LY.inputDot, 7, gateG);
-    dot(`b${i}`, bX, LY.inputDot, 7, gateG);
+    // ── XOR1 out (P) ──
+    const pX=cx-14;
+    addW(`xor1-${i}-o`,[[x1+GW-1,Y.xor1+GH/2],[pX,Y.xor1+GH/2],[pX,Y.pY]],wireG);
 
-    // ── XOR1 gate (center-left) ──
-    const xor1X = cx - GW/2 - 14;
-    gateBox(`xor1-${i}`, 'XOR', xor1X, LY.xor1, gateG);
+    // ── AND1 out (G) → OR ──
+    const gX=cx+16;
+    addW(`and1-${i}-o`,[[a1x+GW-1,Y.and1+GH/2],[gX,Y.and1+GH/2],[gX,Y.or+6]],wireG);
 
-    // ── AND1 gate (center-right) ──
-    const and1X = cx + GW/2 - 42 + 14;
-    gateBox(`and1-${i}`, 'AND', and1X, LY.and1, gateG);
+    // ── Layer 2: XOR2 + AND2 ──
+    const x2=cx-GW-5, a2x=cx+5;
+    addGate(`xor2-${i}`,'XOR',x2,Y.xor2,gateG);
+    addGate(`and2-${i}`,'AND',a2x,Y.and2,gateG);
 
-    // ── Wires: A,B to XOR1 ──
-    wire(`a${i}-xor1`, [[aX, LY.wireIn], [aX, LY.xor1+8], [xor1X+10, LY.xor1+8]], wireG);
-    wire(`b${i}-xor1`, [[bX, LY.wireIn], [bX, LY.xor1+22], [xor1X+10, LY.xor1+22]], wireG);
+    // P → XOR2, AND2
+    addW(`p${i}-xor2`,[[pX,Y.pY],[pX,Y.xor2+6],[x2+8,Y.xor2+6]],wireG);
+    addW(`p${i}-and2`,[[pX,Y.pY],[pX,Y.and2-4],[a2x+8,Y.and2+6]],wireG);
 
-    // ── Wires: A,B to AND1 ──
-    wire(`a${i}-and1`, [[aX, LY.xor1+8], [aX, LY.and1-8], [and1X+10, LY.and1+8]], wireG);
-    wire(`b${i}-and1`, [[bX, LY.xor1+22], [bX, LY.and1+38], [and1X+10, LY.and1+22]], wireG);
+    // Carry-in (from right edge) → XOR2, AND2
+    const ciX=lx+FA_W-20;
+    addW(`ci${i}-x`,[[ciX,Y.xor2+20],[x2+8,Y.xor2+20]],wireG);
+    addW(`ci${i}-a`,[[ciX,Y.and2+20],[a2x+8,Y.and2+20]],wireG);
+    addW(`ci${i}-v`,[[ciX,Y.xor2+20],[ciX,Y.and2+20]],wireG);
 
-    // ── XOR1 output (P) goes down to XOR2 & AND2 ──
-    const pX = cx - 18;
-    wire(`xor1-${i}-out`, [[xor1X+GW-4, LY.xor1+GH/2], [pX, LY.xor1+GH/2], [pX, LY.mid]], wireG);
+    if(i===0){
+      addW('ci-gnd',[[ciX+12,Y.xor2+20],[ciX,Y.xor2+20]],wireG);
+      addW('ci-gnd2',[[ciX+12,Y.and2+20],[ciX,Y.and2+20]],wireG);
+      addTxt(ciX+18,Y.xor2+10,'Cin=0','#2a2a40',6.5,lblG);
+    }
 
-    // ── AND1 output goes down to OR ──
-    const g1X = cx + 24;
-    wire(`and1-${i}-out`, [[and1X+GW-4, LY.and1+GH/2], [g1X, LY.and1+GH/2], [g1X, LY.or+8]], wireG);
+    // ── XOR2 out → Sum ──
+    addW(`s${i}-o`,[[x2+GW-1,Y.xor2+GH/2],[cx-10,Y.xor2+GH/2],[cx-10,Y.sDot]],wireG);
 
-    // ── XOR2 gate ──
-    const xor2X = cx - GW/2 - 14;
-    gateBox(`xor2-${i}`, 'XOR', xor2X, LY.xor2, gateG);
-
-    // ── AND2 gate ──
-    const and2X = cx + GW/2 - 42 + 14;
-    gateBox(`and2-${i}`, 'AND', and2X, LY.and2, gateG);
-
-    // ── Wire: P to XOR2 input ──
-    wire(`p${i}-xor2`, [[pX, LY.mid], [pX, LY.xor2+8], [xor2X+10, LY.xor2+8]], wireG);
-
-    // ── Wire: P to AND2 input ──
-    wire(`p${i}-and2`, [[pX, LY.mid], [pX, LY.and2-6], [and2X+10, LY.and2+8]], wireG);
-
-    // ── Carry-in wire to XOR2 and AND2 ──
-    const cinX = fx + FA_W - 16;
-    wire(`cin${i}-xor2`, [[cinX, LY.xor2+22], [xor2X+10, LY.xor2+22]], wireG);
-    wire(`cin${i}-and2`, [[cinX, LY.and2+22], [and2X+10, LY.and2+22]], wireG);
-    // Vertical carry-in stub
-    wire(`cin${i}-vert`, [[cinX, LY.xor2+22], [cinX, LY.and2+22]], wireG);
-
-    // ── XOR2 output = Sum ──
-    wire(`sum${i}-out`, [[xor2X+GW-4, LY.xor2+GH/2], [fx+24, LY.xor2+GH/2], [fx+24, LY.sumDot]], wireG);
-    dot(`s${i}`, fx+24, LY.sumDot, 7, gateG);
-    label(fx+24, LY.sumLabel+14, `S${i}`, 'var(--text-mid)', 10, lblG);
-
-    // ── AND2 output to OR ──
-    const h1X = cx + 40;
-    wire(`and2-${i}-out`, [[and2X+GW-4, LY.and2+GH/2], [h1X, LY.and2+GH/2], [h1X, LY.or+22]], wireG);
+    // ── AND2 out (H) → OR ──
+    const hX=cx+32;
+    addW(`and2-${i}-o`,[[a2x+GW-1,Y.and2+GH/2],[hX,Y.and2+GH/2],[hX,Y.or+20]],wireG);
 
     // ── OR gate ──
-    const orX = cx - GW/2 + 6;
-    gateBox(`or-${i}`, 'OR', orX, LY.or, gateG);
+    const orX=cx-GW/2;
+    addGate(`or-${i}`,'OR',orX,Y.or,gateG);
+    addW(`g${i}-or`,[[gX,Y.or+6],[orX+7,Y.or+6]],wireG);
+    addW(`h${i}-or`,[[hX,Y.or+20],[orX+GW,Y.or+20]],wireG);
 
-    // ── AND1 output to OR input (top) ──
-    wire(`g1-${i}-or`, [[g1X, LY.or+8], [orX+8, LY.or+8]], wireG);
-    // ── AND2 output to OR input (bottom) ──
-    wire(`h1-${i}-or`, [[h1X, LY.or+22], [orX+GW-2, LY.or+22], [orX+GW-2, LY.or+GH+4], [orX+8, LY.or+GH+4], [orX+8, LY.or+22]], wireG);
+    // ── OR out → carry ──
+    addW(`co-${i}`,[[orX+GW-1,Y.or+GH/2],[cx+3,Y.or+GH/2],[cx+3,Y.cOut]],wireG);
 
-    // ── OR output = Carry out ──
-    const coutY = LY.or + GH/2;
-    wire(`cout-${i}`, [[orX+GW-4, coutY], [cx, coutY], [cx, LY.carryY]], wireG);
+    // ── Sum output dot (green) ──
+    addDot(`s${i}`,cx-10,Y.sDot,8,gateG,'s');
+    addSig(`vs${i}`,cx-10,Y.sDot+3,sigG);
+    addTxt(cx-10,Y.sLbl,`S${i}`,'#00ff8866',9,lblG);
 
-    // ── Signal value labels ──
-    sigLabel(`sv-a${i}`, aX, LY.inputDot+4, sigG);
-    sigLabel(`sv-b${i}`, bX, LY.inputDot+4, sigG);
-    sigLabel(`sv-p${i}`, pX-8, LY.mid+4, sigG);
-    sigLabel(`sv-g${i}`, g1X+8, LY.and1+GH/2+4, sigG);
-    sigLabel(`sv-s${i}`, fx+24, LY.sumDot+4, sigG);
-    sigLabel(`sv-c${i}`, cx, LY.carryY+4, sigG);
+    // Sig labels
+    addSig(`vp${i}`,pX-8,Y.pY,sigG);
+    addSig(`vg${i}`,gX+9,(Y.and1+GH/2+Y.or)/2,sigG);
+    addSig(`vc${i}`,cx+3,Y.cOut+10,sigG);
   }
 
-  // ── Carry chain between FAs ──
-  for (let i = 0; i < 3; i++) {
-    const fromCx = faX(i) + FA_W/2;
-    const toCinX = faX(i+1) + FA_W - 16;
-    wire(`carry-${i}-${i+1}`, [
-      [fromCx, LY.carryY],
-      [fromCx - 6, LY.carryY],
-      [fromCx - 6, LY.carryY + 30],
-      [toCinX + 6, LY.carryY + 30],
-      [toCinX + 6, LY.xor2 + 22],
-      [toCinX, LY.xor2 + 22]
-    ], wireG);
+  // ── Carry chain (orange, thicker, in dedicated layer) ──
+  for(let i=0;i<3;i++){
+    const fromX=faCx(i)+3;
+    const toX=faL(i+1)+FA_W-20;
+    addW(`cc-${i}`,[[fromX,Y.cOut],[fromX,Y.cChain],[toX,Y.cChain],[toX,Y.xor2+20]],carryG,{'stroke-width':2.5});
+    addTxt((fromX+toX)/2,Y.cChain-6,`C${i} (mente)`,'#2a2a40',7,lblG);
   }
 
-  // ── FA0 carry-in = 0 ──
-  const cin0X = faX(0) + FA_W - 16;
-  wire('cin-gnd', [[cin0X + 16, LY.xor2+22], [cin0X, LY.xor2+22]], wireG);
-  label(cin0X + 22, LY.xor2+26, '0', '#445', 10, lblG);
-  // And to AND2
-  wire('cin-gnd-and2', [[cin0X + 16, LY.and2+22], [cin0X, LY.and2+22]], wireG);
+  // ── S4 from FA3 carry ──
+  const s4x=faL(3)+3;
+  addW('cc-final',[[faCx(3)+3,Y.cOut],[faCx(3)+3,Y.cChain+8],[s4x,Y.cChain+8],[s4x,Y.sDot]],carryG,{'stroke-width':2.5});
+  addDot('s4',s4x,Y.sDot,8,gateG,'s');
+  addSig('vs4',s4x,Y.sDot+3,sigG);
+  addTxt(s4x,Y.sLbl,'S4','#00ff8866',9,lblG);
+  mk('path',{d:`M${s4x},${Y.arr2-6} L${s4x},${Y.sDot-14}`,stroke:'#222838','stroke-width':1,fill:'none','marker-end':'url(#arr)'},lblG);
 
-  // ── S4 (final carry out from FA3) ──
-  const fa3cx = faX(3) + FA_W/2;
-  wire('cout-final', [[fa3cx, LY.carryY], [fa3cx, LY.carryY+40]], wireG);
-  dot('s4', fa3cx, LY.carryY+40, 7, gateG);
-  label(fa3cx, LY.carryY+58, 'S4', 'var(--text-mid)', 10, lblG);
-  sigLabel('sv-s4', fa3cx, LY.carryY+44, sigG);
+  // Result bits HTML
+  const rb=document.getElementById('result-bits');rb.innerHTML='';
+  for(let i=4;i>=0;i--){const d=document.createElement('div');d.className='result-bit';d.id=`rb-${i}`;d.textContent='0';rb.appendChild(d)}
+}
 
-  // Carry labels
-  for (let i = 0; i < 4; i++) {
-    const cx = faX(i) + FA_W/2;
-    label(cx, LY.carryY + 12, i < 3 ? `C${i}` : '', '#334', 8, lblG);
+// ══════════════════════════════════════════
+//  COMPUTE
+// ══════════════════════════════════════════
+function compute(a,b){
+  const bits=[];let carry=0;
+  for(let i=0;i<4;i++){
+    const ai=(a>>i)&1,bi=(b>>i)&1;
+    const p=ai^bi,g=ai&bi,s=p^carry,h=p&carry,cout=g|h;
+    bits.push({i,ai,bi,cin:carry,p,g,s,h,cout});
+    carry=cout;
   }
-  label(faX(0) + FA_W - 2, LY.xor2-2, 'Cin', '#334', 7, lblG);
+  return{bits,carry};
+}
 
-  // Build result bits in HTML
-  const rb = document.getElementById('result-bits');
-  rb.innerHTML = '';
-  for (let i = 4; i >= 0; i--) {
-    const d = document.createElement('div');
-    d.className = 'bit'; d.id = `rb-${i}`; d.textContent = '0';
-    rb.appendChild(d);
+// ══════════════════════════════════════════
+//  PAPER ADDITION
+// ══════════════════════════════════════════
+function resetPaper(){
+  for(let i=0;i<4;i++){
+    ['a','b','s'].forEach(t=>{const e=document.getElementById(`pc-${t}${i}`);if(e){e.textContent='';e.className='paper-cell'}});
+    const c=document.getElementById(`pc-c${i}`);if(c){c.textContent=i===0?'0':'';c.className='paper-cell';if(i===0)c.style.cssText='color:#334;font-size:.7rem'}
   }
 }
 
-// ══════════════════════════════════════════════════════
-//  CIRCUIT LOGIC
-// ══════════════════════════════════════════════════════
-function compute(a, b) {
-  const bits = []; let carry = 0;
-  for (let i = 0; i < 4; i++) {
-    const ai = (a >> i) & 1, bi = (b >> i) & 1;
-    const p = ai ^ bi, g = ai & bi;
-    const s = p ^ carry, h = p & carry;
-    const cout = g | h;
-    bits.push({i, ai, bi, cin:carry, p, g, s, h, cout});
-    carry = cout;
-  }
-  return {bits, carry};
+function setPaper(type,idx,val,cls,delay){
+  timers.push(setTimeout(()=>{
+    const e=document.getElementById(`pc-${type}${idx}`);
+    if(!e)return;
+    e.textContent=val;
+    e.className='paper-cell '+cls;
+    e.style.cssText='';
+  },delay));
 }
 
-// ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════
+//  STEP DESCRIPTION
+// ══════════════════════════════════════════
+function setStep(text,delay){
+  timers.push(setTimeout(()=>{document.getElementById('step-desc').innerHTML=text},delay));
+}
+
+// ══════════════════════════════════════════
 //  ANIMATION
-// ══════════════════════════════════════════════════════
-function clearAnim() {
-  timers.forEach(t => clearTimeout(t)); timers = [];
-  Object.values(wires).forEach(w => {
-    w.setAttribute('stroke', 'var(--wire-off)');
-    w.setAttribute('stroke-width', 2.2);
-    w.removeAttribute('filter');
-    w.style.cssText = '';
-  });
-  Object.values(gates).forEach(g => {
-    if (g.tagName === 'circle') {
-      g.setAttribute('fill', '#111');
-      g.setAttribute('stroke', 'var(--wire-off)');
-      g.removeAttribute('filter');
-    } else {
-      // gate group
-      g.querySelectorAll('path').forEach(p => p.setAttribute('stroke', 'var(--gate-off)'));
-      g.querySelectorAll('text').forEach(t => t.setAttribute('fill', 'var(--gate-off)'));
-      g.removeAttribute('filter');
+// ══════════════════════════════════════════
+function clearAnim(){
+  timers.forEach(t=>clearTimeout(t));timers=[];
+  Object.values(EW).forEach(w=>{w.setAttribute('stroke','var(--wire-off)');w.setAttribute('stroke-width',w.id.startsWith('w-cc')?2.5:2);w.removeAttribute('filter');w.style.cssText=''});
+  Object.values(EG).forEach(g=>{if(g.tagName==='circle'){g.setAttribute('fill','#111');g.setAttribute('stroke','var(--wire-off)');g.removeAttribute('filter')}else{g.querySelectorAll('path').forEach(p=>p.setAttribute('stroke','var(--gate-off)'));g.querySelectorAll('text').forEach(t=>t.setAttribute('fill','var(--gate-off)'));g.removeAttribute('filter')}});
+  Object.values(ES).forEach(s=>{s.textContent='';s.setAttribute('fill','transparent')});
+  for(let i=0;i<=4;i++){const e=document.getElementById(`rb-${i}`);if(e){e.textContent='0';e.className='result-bit'}}
+  document.getElementById('result-dec').textContent='= ?';
+  document.getElementById('step-desc').innerHTML='&nbsp;';
+  resetPaper();
+}
+
+function setW(id,val,delay,clr){
+  const w=EW[id];if(!w)return;
+  timers.push(setTimeout(()=>{
+    const on=val===1;
+    const c=clr||(on?'var(--green)':'var(--wire-off)');
+    w.setAttribute('stroke',c);
+    w.setAttribute('stroke-width',on?(w.id.startsWith('w-cc')?3.5:2.6):(w.id.startsWith('w-cc')?2.5:2));
+    if(on){const fm={'var(--green)':'url(#gl-g)','var(--cyan)':'url(#gl-c)','var(--magenta)':'url(#gl-m)','var(--orange)':'url(#gl-o)'};w.setAttribute('filter',fm[c]||'url(#gl-g)')}
+    if(on){const len=w.getTotalLength?w.getTotalLength():50;w.style.strokeDasharray=`${len*.25} ${len*.1}`;w.style.strokeDashoffset=len;w.style.transition='none';requestAnimationFrame(()=>{w.style.transition=`stroke-dashoffset ${380/animSpeed}ms linear`;w.style.strokeDashoffset='0'});timers.push(setTimeout(()=>{w.style.strokeDasharray='';w.style.strokeDashoffset='';w.style.transition=''},420/animSpeed))}
+  },delay));
+}
+
+function setG(id,on,delay){
+  const g=EG[id];if(!g)return;
+  timers.push(setTimeout(()=>{
+    if(g.tagName==='circle'){
+      const cls=g.getAttribute('data-cls');
+      if(!on){g.setAttribute('fill','#1a0808');g.setAttribute('stroke','#332222');return}
+      const m={'a':['var(--cyan)','url(#gl-c)'],'b':['var(--magenta)','url(#gl-m)'],'s':['var(--green)','url(#gl-g)']};
+      const[c,f]=m[cls]||['var(--green)','url(#gl-g)'];
+      g.setAttribute('fill',c);g.setAttribute('stroke',c);g.setAttribute('filter',f);
+    }else{
+      const c=on?'var(--green)':'#443344';
+      g.querySelectorAll('path').forEach(p=>p.setAttribute('stroke',c));
+      g.querySelectorAll('text').forEach(t=>t.setAttribute('fill',c));
+      if(on)g.setAttribute('filter','url(#gl-gate)');
     }
-  });
-  Object.values(sigs).forEach(s => { s.textContent = ''; s.setAttribute('fill', '#555'); });
+  },delay));
 }
 
-function setWire(id, val, delay) {
-  const w = wires[id]; if (!w) return;
-  timers.push(setTimeout(() => {
-    const on = val === 1;
-    w.setAttribute('stroke', on ? 'var(--wire-on)' : 'var(--wire-zero)');
-    w.setAttribute('stroke-width', on ? 2.8 : 2.2);
-    if (on) w.setAttribute('filter', 'url(#glow-g)');
-    // Dash animation for "1" signals
-    if (on) {
-      const len = w.getTotalLength ? w.getTotalLength() : 80;
-      w.style.strokeDasharray = `${len*.2} ${len*.1}`;
-      w.style.strokeDashoffset = len;
-      w.style.transition = 'none';
-      requestAnimationFrame(() => {
-        w.style.transition = `stroke-dashoffset ${500/animSpeed}ms linear`;
-        w.style.strokeDashoffset = '0';
-      });
-      timers.push(setTimeout(() => {
-        w.style.strokeDasharray = '';
-        w.style.strokeDashoffset = '';
-        w.style.transition = '';
-      }, 550/animSpeed));
-    }
-  }, delay));
+function setSig(id,val,delay,clr){
+  const s=ES[id];if(!s)return;
+  timers.push(setTimeout(()=>{s.textContent=val;s.setAttribute('fill',clr||(val?'var(--green)':'#ff444466'))},delay));
 }
 
-function setGate(id, on, delay) {
-  const g = gates[id]; if (!g) return;
-  timers.push(setTimeout(() => {
-    if (g.tagName === 'circle') {
-      g.setAttribute('fill', on ? 'var(--green)' : '#1a0808');
-      g.setAttribute('stroke', on ? 'var(--green)' : '#442222');
-      if (on) g.setAttribute('filter', 'url(#glow-g)');
-    } else {
-      const col = on ? 'var(--green)' : '#664444';
-      g.querySelectorAll('path').forEach(p => p.setAttribute('stroke', col));
-      g.querySelectorAll('text').forEach(t => t.setAttribute('fill', col));
-      if (on) g.setAttribute('filter', 'url(#glow-gate)');
-    }
-  }, delay));
+function setRes(idx,val,delay){
+  timers.push(setTimeout(()=>{const e=document.getElementById(`rb-${idx}`);if(e){e.textContent=val;e.className=`result-bit ${val?'on':'off'}`}},delay));
 }
 
-function setSig(id, val, delay) {
-  const s = sigs[id]; if (!s) return;
-  timers.push(setTimeout(() => {
-    s.textContent = val;
-    s.setAttribute('fill', val === 1 ? 'var(--green)' : '#ff444488');
-  }, delay));
-}
-
-function setResult(idx, val, delay) {
-  timers.push(setTimeout(() => {
-    const e = document.getElementById(`rb-${idx}`);
-    if (!e) return;
-    e.textContent = val;
-    e.className = `bit ${val ? 'on' : 'off'}`;
-  }, delay));
-}
-
-function runAnimation() {
+function runAnimation(){
   clearAnim();
-  const r = compute(valA, valB);
-  const dt = 350 / animSpeed;
-  let t = 100;
+  const r=compute(valA,valB);
+  const dt=300/animSpeed;
+  let t=60;
 
-  for (let i = 0; i < 4; i++) {
-    const b = r.bits[i];
-    const d = t;
-
-    // 1. Input bits light up
-    setGate(`a${i}`, b.ai, d);
-    setGate(`b${i}`, b.bi, d);
-    setSig(`sv-a${i}`, b.ai, d);
-    setSig(`sv-b${i}`, b.bi, d);
-
-    // 2. Wires to XOR1 and AND1
-    setWire(`a${i}-xor1`, b.ai, d + dt);
-    setWire(`b${i}-xor1`, b.bi, d + dt);
-    setWire(`a${i}-and1`, b.ai, d + dt);
-    setWire(`b${i}-and1`, b.bi, d + dt);
-
-    // 3. XOR1 and AND1 compute
-    setGate(`xor1-${i}`, true, d + dt*2);
-    setGate(`and1-${i}`, true, d + dt*2);
-
-    // 4. P and G outputs
-    setWire(`xor1-${i}-out`, b.p, d + dt*2.5);
-    setWire(`and1-${i}-out`, b.g, d + dt*2.5);
-    setSig(`sv-p${i}`, b.p, d + dt*2.5);
-    setSig(`sv-g${i}`, b.g, d + dt*2.5);
-
-    // 5. P to XOR2 and AND2
-    setWire(`p${i}-xor2`, b.p, d + dt*3);
-    setWire(`p${i}-and2`, b.p, d + dt*3);
-
-    // 6. Carry-in wires
-    setWire(`cin${i}-xor2`, b.cin, d + dt*3);
-    setWire(`cin${i}-and2`, b.cin, d + dt*3);
-    setWire(`cin${i}-vert`, b.cin, d + dt*3);
-    if (i === 0) {
-      setWire('cin-gnd', 0, d + dt*3);
-      setWire('cin-gnd-and2', 0, d + dt*3);
-    }
-
-    // 7. XOR2 and AND2 compute
-    setGate(`xor2-${i}`, true, d + dt*3.5);
-    setGate(`and2-${i}`, true, d + dt*3.5);
-
-    // 8. Sum output
-    setWire(`sum${i}-out`, b.s, d + dt*4);
-    setGate(`s${i}`, b.s, d + dt*4.5);
-    setSig(`sv-s${i}`, b.s, d + dt*4.5);
-    setResult(i, b.s, d + dt*4.5);
-
-    // 9. AND2 output to OR
-    setWire(`and2-${i}-out`, b.h, d + dt*4);
-    setWire(`g1-${i}-or`, b.g, d + dt*4);
-    setWire(`h1-${i}-or`, b.h, d + dt*4);
-
-    // 10. OR gate
-    setGate(`or-${i}`, true, d + dt*4.5);
-
-    // 11. Carry out
-    setWire(`cout-${i}`, b.cout, d + dt*5);
-    setSig(`sv-c${i}`, b.cout, d + dt*5);
-
-    // 12. Carry to next FA
-    if (i < 3) {
-      setWire(`carry-${i}-${i+1}`, b.cout, d + dt*5.5);
-    }
-
-    t += dt * 6;
+  // Show all A,B values in paper immediately
+  for(let i=0;i<4;i++){
+    setPaper('a',i,r.bits[3-i].ai,'',0);
+    setPaper('b',i,r.bits[3-i].bi,'',0);
   }
 
-  // Final carry = S4
-  setWire('cout-final', r.carry, t);
-  setGate('s4', r.carry, t + dt);
-  setSig('sv-s4', r.carry, t + dt);
-  setResult(4, r.carry, t + dt);
+  setStep('Starter addisjon fra hoyre (bit 0) &mdash; akkurat som paa papir!',t);
 
-  // Update decimal
-  timers.push(setTimeout(() => {
-    document.getElementById('result-dec').textContent = valA + valB;
-  }, t + dt*1.5));
+  for(let i=0;i<4;i++){
+    const b=r.bits[i];
+    const d=t;
+    const col=3-i; // paper column index (bit3=col0, bit0=col3)
+
+    // Step description
+    setStep(`<strong>FA${i}</strong>: Beregner A${i}(${b.ai}) + B${i}(${b.bi}) + Cin(${b.cin}) = ${b.ai+b.bi+b.cin} &rarr; Sum=${b.s}, Carry=${b.cout}`,d);
+
+    // Paper: highlight current A,B
+    setPaper('a',col,b.ai,'on-cyan',d);
+    setPaper('b',col,b.bi,'on-mag',d);
+
+    // 1. Input dots
+    setG(`a${i}`,b.ai,d);
+    setG(`b${i}`,b.bi,d);
+    setSig(`va${i}`,b.ai,d,b.ai?'var(--cyan)':'#ff444444');
+    setSig(`vb${i}`,b.bi,d,b.bi?'var(--magenta)':'#ff444444');
+
+    // 2. Wires down
+    setW(`a${i}-d`,b.ai,d+dt*.5,b.ai?'var(--cyan)':undefined);
+    setW(`b${i}-d`,b.bi,d+dt*.5,b.bi?'var(--magenta)':undefined);
+
+    // 3. Wires to gates
+    setW(`a${i}-xor1`,b.ai,d+dt,b.ai?'var(--cyan)':undefined);
+    setW(`b${i}-xor1`,b.bi,d+dt,b.bi?'var(--magenta)':undefined);
+    setW(`a${i}-and1`,b.ai,d+dt,b.ai?'var(--cyan)':undefined);
+    setW(`b${i}-and1`,b.bi,d+dt,b.bi?'var(--magenta)':undefined);
+
+    // 4. Gates compute
+    setG(`xor1-${i}`,true,d+dt*1.7);
+    setG(`and1-${i}`,true,d+dt*1.7);
+
+    // 5. Outputs P,G
+    setW(`xor1-${i}-o`,b.p,d+dt*2.2);
+    setW(`and1-${i}-o`,b.g,d+dt*2.2);
+    setSig(`vp${i}`,b.p,d+dt*2.2);
+    setSig(`vg${i}`,b.g,d+dt*2.2);
+
+    // 6. P → XOR2/AND2
+    setW(`p${i}-xor2`,b.p,d+dt*2.6);
+    setW(`p${i}-and2`,b.p,d+dt*2.6);
+
+    // 7. Carry-in (orange for value=1)
+    const ciClr=b.cin?'var(--orange)':undefined;
+    setW(`ci${i}-x`,b.cin,d+dt*2.6,ciClr);
+    setW(`ci${i}-a`,b.cin,d+dt*2.6,ciClr);
+    setW(`ci${i}-v`,b.cin,d+dt*2.6,ciClr);
+    if(i===0){setW('ci-gnd',0,d+dt*2.6);setW('ci-gnd2',0,d+dt*2.6)}
+
+    // 8. XOR2/AND2
+    setG(`xor2-${i}`,true,d+dt*3.1);
+    setG(`and2-${i}`,true,d+dt*3.1);
+
+    // 9. Sum output
+    setW(`s${i}-o`,b.s,d+dt*3.5);
+    setG(`s${i}`,b.s,d+dt*4);
+    setSig(`vs${i}`,b.s,d+dt*4);
+    setRes(i,b.s,d+dt*4);
+    // Paper: sum
+    setPaper('s',col,b.s,b.s?'on-green':'off',d+dt*4);
+
+    // 10. H→OR, G→OR
+    setW(`and2-${i}-o`,b.h,d+dt*3.5);
+    setW(`g${i}-or`,b.g,d+dt*3.5);
+    setW(`h${i}-or`,b.h,d+dt*3.5);
+
+    // 11. OR gate
+    setG(`or-${i}`,true,d+dt*4);
+
+    // 12. Carry out
+    const coClr=b.cout?'var(--orange)':undefined;
+    setW(`co-${i}`,b.cout,d+dt*4.5,coClr);
+    setSig(`vc${i}`,b.cout,d+dt*4.5,b.cout?'var(--orange)':'#ff444444');
+
+    // Paper: carry for next column
+    if(i<3){
+      setPaper('c',col-1,b.cout,b.cout?'on-orange':'off',d+dt*4.5);
+    }
+
+    // 13. Carry chain to next FA (orange)
+    if(i<3){
+      setW(`cc-${i}`,b.cout,d+dt*5,coClr);
+    }
+
+    t+=dt*5.5;
+  }
+
+  // S4
+  const coClr=r.carry?'var(--orange)':undefined;
+  setW('cc-final',r.carry,t,coClr);
+  setG('s4',r.carry,t+dt);
+  setSig('vs4',r.carry,t+dt);
+  setRes(4,r.carry,t+dt);
+
+  setStep(`Ferdig! <strong>${valA} + ${valB} = ${valA+valB}</strong>`,t+dt*1.5);
+  timers.push(setTimeout(()=>{document.getElementById('result-dec').textContent=`= ${valA+valB}`},t+dt*1.5));
 }
 
-// ══════════════════════════════════════════════════════
-//  INPUT CONTROLS
-// ══════════════════════════════════════════════════════
-function changeVal(which, delta) {
-  if (which === 'a') valA = Math.max(0, Math.min(15, valA + delta));
-  else valB = Math.max(0, Math.min(15, valB + delta));
-  updateDisplay();
-  runAnimation();
+// ══════════════════════════════════════════
+//  CONTROLS
+// ══════════════════════════════════════════
+function changeVal(w,d){
+  if(w==='a')valA=Math.max(0,Math.min(15,valA+d));
+  else valB=Math.max(0,Math.min(15,valB+d));
+  updateDisplay();runAnimation();
 }
-
-function updateDisplay() {
-  document.getElementById('val-a').textContent = valA;
-  document.getElementById('val-b').textContent = valB;
-  document.getElementById('bin-a').textContent = valA.toString(2).padStart(4, '0');
-  document.getElementById('bin-b').textContent = valB.toString(2).padStart(4, '0');
+function updateDisplay(){
+  document.getElementById('val-a').textContent=valA;
+  document.getElementById('val-b').textContent=valB;
+  document.getElementById('bin-a').textContent=valA.toString(2).padStart(4,'0');
+  document.getElementById('bin-b').textContent=valB.toString(2).padStart(4,'0');
 }
-
-// ══════════════════════════════════════════════════════
-//  TABS
-// ══════════════════════════════════════════════════════
-function showTab(id) {
-  document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(e => e.classList.remove('active'));
+function showTab(id){
+  document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(e=>e.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    if (b.getAttribute('onclick').includes(id)) b.classList.add('active');
-  });
+  document.querySelectorAll('.tab-btn').forEach(b=>{if(b.getAttribute('onclick').includes(id))b.classList.add('active')});
 }
 
-// ══════════════════════════════════════════════════════
-//  TOOLTIP on gates
-// ══════════════════════════════════════════════════════
-const tipEl = document.getElementById('tooltip');
-const tipMap = {
-  'xor1': 'XOR1: P = A XOR B\nDelvis sum (propagate)',
-  'and1': 'AND1: G = A AND B\nGenerer carry (generate)',
-  'xor2': 'XOR2: S = P XOR Cin\nEndelig sum-bit',
-  'and2': 'AND2: H = P AND Cin\nPropager carry',
-  'or':   'OR: Cout = G OR H\nKombiner carry-signaler'
-};
-document.getElementById('gates').addEventListener('mousemove', e => {
-  let target = e.target.closest('g[id^="g-"]');
-  if (!target) { tipEl.style.display = 'none'; return; }
-  const gid = target.id.replace('g-','');
-  const base = gid.replace(/-\d$/,'');
-  const txt = tipMap[base];
-  if (!txt) { tipEl.style.display = 'none'; return; }
-  tipEl.style.display = 'block';
-  tipEl.innerHTML = txt.replace(/\n/g,'<br>');
-  tipEl.style.left = (e.clientX + 12) + 'px';
-  tipEl.style.top = (e.clientY - 10) + 'px';
+// ── Tooltip ──
+const tipEl=document.getElementById('tooltip');
+const tipMap={xor1:'XOR1: P = A XOR B\nDelvis sum (propagate)',and1:'AND1: G = A AND B\nDirekte carry (generate)',xor2:'XOR2: S = P XOR Cin\nEndelig sum-bit',and2:'AND2: H = P AND Cin\nPropagert carry',or:'OR: Cout = G OR H\nTotal carry ut'};
+document.getElementById('gates').addEventListener('mousemove',e=>{
+  let tg=e.target.closest('g[id^="g-"]');
+  if(!tg){tipEl.style.display='none';return}
+  const base=tg.id.replace('g-','').replace(/-\d$/,'');
+  const txt=tipMap[base];
+  if(!txt){tipEl.style.display='none';return}
+  tipEl.style.display='block';tipEl.innerHTML=txt.replace(/\n/g,'<br>');
+  tipEl.style.left=(e.clientX+12)+'px';tipEl.style.top=(e.clientY-10)+'px';
 });
-document.getElementById('gates').addEventListener('mouseleave', () => {
-  tipEl.style.display = 'none';
-});
+document.getElementById('gates').addEventListener('mouseleave',()=>tipEl.style.display='none');
 
-// ══════════════════════════════════════════════════════
-//  SPEED SLIDER
-// ══════════════════════════════════════════════════════
-document.getElementById('speed-slider').addEventListener('input', function() {
-  animSpeed = +this.value;
-  document.getElementById('speed-lbl').textContent = animSpeed + 'x';
-});
+// ── Speed ──
+document.getElementById('speed-slider').addEventListener('input',function(){animSpeed=+this.value;document.getElementById('speed-lbl').textContent=animSpeed+'x'});
 
-// ══════════════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════════════
-buildCircuit();
-updateDisplay();
-runAnimation();
+// ── Init ──
+buildCircuit();updateDisplay();runAnimation();
 </script>
 </body>
 </html>
